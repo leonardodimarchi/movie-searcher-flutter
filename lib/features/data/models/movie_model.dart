@@ -1,6 +1,5 @@
 import 'package:movie-searcher-flutter/features/domain/entities/movie_entity.dart';
 
-
 class MovieModel extends MovieEntity {
   const MovieModel({
     required int id, 
