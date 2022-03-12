@@ -1,5 +1,4 @@
-import 'package:movie-searcher-flutter/features/domain/entities/movie_entity.dart';
-
+import 'package:movie_searcher_flutter/features/domain/entities/movie_entity.dart';
 
 class MovieModel extends MovieEntity {
   const MovieModel({
@@ -11,13 +10,13 @@ class MovieModel extends MovieEntity {
     required String backdropImage,
     required double average,
   }) : super(
-    id, 
-    title, 
-    description,
-    releaseDate,
-    image,
-    backdropImage,
-    average
+    id: id, 
+    title: title, 
+    description: description,
+    releaseDate: releaseDate,
+    image: image,
+    backdropImage: backdropImage,
+    average: average
   );
 
     factory MovieModel.fromJson(Map<String, dynamic> json) => 
