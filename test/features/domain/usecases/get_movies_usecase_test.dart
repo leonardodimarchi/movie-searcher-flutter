@@ -3,18 +3,18 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:movie_searcher_flutter/core/errors/failures.dart';
 import 'package:movie_searcher_flutter/core/usecase/usecase.dart';
-import 'package:movie_searcher_flutter/features/domain/repositories/movies_repository.dart';
+import 'package:movie_searcher_flutter/features/domain/repositories/movie_repository.dart';
 import 'package:movie_searcher_flutter/features/domain/usecases/get_movies_usecase.dart';
 
 import '../../../mocks/movie_entity_mock.dart';
 
-class MockMoviesRepository extends Mock implements MoviesRepository {
+class MockMoviesRepository extends Mock implements MovieRepository {
 
 }
 
 void main() {
   late GetMoviesUsecase usecase;
-  late MoviesRepository repository;
+  late MovieRepository repository;
 
   setUp(() {
     repository = MockMoviesRepository();
