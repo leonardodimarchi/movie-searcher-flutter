@@ -30,6 +30,7 @@
 .pub-cache/
 .pub/
 /build/
+lib/core/utils/keys/tmdb_api_keys.dart
 
 # Web related
 lib/generated_plugin_registrant.dart
