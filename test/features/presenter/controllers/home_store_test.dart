@@ -2,6 +2,7 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:movie_searcher_flutter/core/errors/failures.dart';
+import 'package:movie_searcher_flutter/core/usecase/usecase.dart';
 import 'package:movie_searcher_flutter/features/domain/usecases/get_movies_usecase.dart';
 import 'package:movie_searcher_flutter/features/presenter/controllers/home_store.dart';
 
@@ -16,8 +17,10 @@ void main() {
   late GetMoviesUsecase mockUsecase;
 
   setUp((){
-    mockUsecase = MockGetSpaceMediaByDateUseCase();
+    mockUsecase = MockGetMoviesUsecase();
     homeStore = HomeStore(mockUsecase);
+
+    registerFallbackValue(NoParams());
   });
 
   final mockedFailure = ServerFailure();
@@ -25,7 +28,7 @@ void main() {
     movieEntityMock,
     movieEntityMock,
     movieEntityMock,
-  ]
+  ];
 
   test('Should return a List of movie entities from the usecase', () async {
     when(() => mockUsecase(any())).thenAnswer((_) async => const Right(movieEntityList));
@@ -35,7 +38,7 @@ void main() {
     homeStore.observer(
       onState: (state) {
         expect(state, movieEntityList);
-        verify(() => mockUsecase()).called(1);
+        verify(() => mockUsecase(NoParams())).called(1);
       },
     );
   });
@@ -48,7 +51,7 @@ void main() {
     homeStore.observer(
       onError: (error) {
         expect(error, mockedFailure);
-        verify(() => mockUsecase(mockedDate)).called(1);
+        verify(() => mockUsecase(NoParams())).called(1);
       }
     );
   });
