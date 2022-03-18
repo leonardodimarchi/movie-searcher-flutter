@@ -38,6 +38,7 @@ dependencies:
   http: ^0.13.4
   dartz: ^0.10.1
   mocktail: ^0.3.0
+  flutter_triple: ^1.2.7+2
 
 dev_dependencies:
   flutter_test:
