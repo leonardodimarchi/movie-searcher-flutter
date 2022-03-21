@@ -1,6 +1,6 @@
 # Movie Database App (From [App Ideas](https://github.com/florinpop17/app-ideas))
 
-Also using TDD and Clean Architecture
+Flutter app using TDD and Clean Architecture
 
 **Tier:** 3-Advanced
 
