@@ -10,9 +10,9 @@ class AppModule extends Module {
   @override
   final List<Bind> binds = [
     Bind.factory((i) => HomeStore(i())),
-    Bind.lazySingleton((i) => getMovies(i())),
-    Bind.lazySingleton((i) => MovieRepositoryImplementation(i())),
-    Bind.lazySingleton((i) => TmdbDatasourceImplementation(converter: i(), httpClient: i())),
+    Bind.lazySingleton((i) => GetMoviesUsecase(repository: i())),
+    Bind.lazySingleton((i) => MovieRepositoryImplementation(datasource: i())),
+    Bind.lazySingleton((i) => TmdbDatasourceImplementation(httpClient: i())),
     Bind.lazySingleton((i) => HttpClientImplementation()),
   ];
 
