@@ -26,29 +26,27 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
         backgroundColor: Colors.blueAccent,
       ),
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.all(20),
-          child: ScopedBuilder(
-            store: store,
-            onLoading: (context) =>
-                const Center(child: CircularProgressIndicator()),
-            onError: (context, error) => Center(
-              child: Text(
-                'An error occurred, try again later.',
-                style: Theme.of(context)
-                    .textTheme
-                    .caption
-                    ?.copyWith(color: Colors.white),
-              ),
+        child: ScopedBuilder(
+          store: store,
+          onLoading: (context) =>
+              const Center(child: CircularProgressIndicator()),
+          onError: (context, error) => Center(
+            child: Text(
+              'An error occurred, try again later.',
+              style: Theme.of(context)
+                  .textTheme
+                  .caption
+                  ?.copyWith(color: Colors.white),
             ),
-            onState: (context, List<MovieEntity> movies) {
-              List<Text> movieCards = movies.map((movie) => Text(movie.title)).toList();
-
-              return ListView(
-                children: movieCards,
-              );
-            },
           ),
+          onState: (context, List<MovieEntity> movies) {
+            List<Text> movieCards =
+                movies.map((movie) => Text(movie.title)).toList();
+
+            return ListView(
+              children: movieCards,
+            );
+          },
         ),
       ),
     );
