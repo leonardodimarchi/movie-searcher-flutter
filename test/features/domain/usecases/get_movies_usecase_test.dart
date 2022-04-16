@@ -2,7 +2,6 @@ import 'package:dartz/dartz.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:movie_searcher_flutter/core/errors/failures.dart';
-import 'package:movie_searcher_flutter/core/usecase/usecase.dart';
 import 'package:movie_searcher_flutter/features/domain/repositories/movie_repository.dart';
 import 'package:movie_searcher_flutter/features/domain/usecases/get_movies_usecase.dart';
 
