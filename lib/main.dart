@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:movie_seacher_flutter/app_module.dart';
-import 'package:movie_seacher_flutter/app_widget.dart';
+import 'package:movie_searcher_flutter/app_module.dart';
+import 'package:movie_searcher_flutter/app_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ModularApp(
       module: AppModule(),
-      child: const gits AppWidget(),
+      child: const AppWidget(),
     );
   }
 }

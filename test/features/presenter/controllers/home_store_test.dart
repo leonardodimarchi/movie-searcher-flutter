@@ -3,6 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:movie_searcher_flutter/core/errors/failures.dart';
 import 'package:movie_searcher_flutter/core/usecase/usecase.dart';
+import 'package:movie_searcher_flutter/features/data/models/movie_pagination.dart';
 import 'package:movie_searcher_flutter/features/domain/usecases/get_movies_usecase.dart';
 import 'package:movie_searcher_flutter/features/presenter/controllers/home_store.dart';
 
@@ -19,8 +20,6 @@ void main() {
   setUp((){
     mockUsecase = MockGetMoviesUsecase();
     homeStore = HomeStore(mockUsecase);
-
-    registerFallbackValue(NoParams());
   });
 
   final mockedFailure = ServerFailure();
@@ -37,8 +36,8 @@ void main() {
 
     homeStore.observer(
       onState: (state) {
-        expect(state, movieEntityList);
-        verify(() => mockUsecase(NoParams())).called(1);
+        expect(state, MoviePagination(page: 1, movies: movieEntityList));
+        verify(() => mockUsecase(1)).called(1);
       },
     );
   });
@@ -51,7 +50,7 @@ void main() {
     homeStore.observer(
       onError: (error) {
         expect(error, mockedFailure);
-        verify(() => mockUsecase(NoParams())).called(1);
+        verify(() => mockUsecase(1)).called(1);
       }
     );
   });
