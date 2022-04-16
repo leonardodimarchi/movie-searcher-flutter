@@ -1,22 +1,33 @@
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:movie_searcher_flutter/core/errors/failures.dart';
-import 'package:movie_searcher_flutter/core/usecase/usecase.dart';
-import 'package:movie_searcher_flutter/features/domain/entities/movie_entity.dart';
+import 'package:movie_searcher_flutter/features/data/models/movie_pagination.dart';
 import 'package:movie_searcher_flutter/features/domain/usecases/get_movies_usecase.dart';
 
-class HomeStore extends NotifierStore<Failure, List<MovieEntity>> {
+class HomeStore extends NotifierStore<Failure, MoviePagination> {
   final GetMoviesUsecase usecase;
 
-  HomeStore(this.usecase) : super([]);
+  HomeStore(this.usecase) : super(MoviePagination());
 
   getMovies() async {
-    setLoading(true);
+    if (state.page == 1) {
+      setLoading(true);
+    }
 
-    final movieList = await usecase(NoParams());
+    final movieList = await usecase(state.page + 1);
+
+    if (state.page == 1) {
+      setLoading(false);
+    }
+
+    print(state.page);
 
     movieList.fold(
       (error) => setError(error), 
-      (success) => update(success),
+      (success) {
+        MoviePagination movie = MoviePagination(page: state.page + 1, movies: [...state.movies, ...success]);
+
+        update(movie);
+      },
     );
   }
 }

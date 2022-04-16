@@ -22,7 +22,7 @@ void main() {
     datasource = TmdbDatasourceImplementation(httpClient: httpClient);
   });
 
-  final expectedUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=' + TmdbApiKeys.apiKey;
+  final expectedUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=' + TmdbApiKeys.apiKey + "&page=1";
 
   void successMock() {
     when(() => httpClient.get(any()))
@@ -32,7 +32,7 @@ void main() {
   test('Should call get method with correct url', () async {
     successMock();
 
-    await datasource.getMovies();
+    await datasource.getMovies(1);
 
     verify(() => httpClient.get(expectedUrl)).called(1);
   });
@@ -60,7 +60,7 @@ void main() {
       ),
     ];
 
-    final result =  await datasource.getMovies();
+    final result =  await datasource.getMovies(1);
 
     expect(result, expectedList);
   });
@@ -72,7 +72,7 @@ void main() {
         statusCode: 400,
       ));
 
-    final result = datasource.getMovies();
+    final result = datasource.getMovies(1);
 
     expect(() => result, throwsA(ServerException()));
   });

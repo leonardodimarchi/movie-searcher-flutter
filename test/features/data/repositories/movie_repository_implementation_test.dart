@@ -29,20 +29,20 @@ void main() {
   ];
 
   test('Should return a list of MovieModel when calls the datasource', () async {
-    when(() => datasource.getMovies()).thenAnswer((_) async => movieModelsListMock);
+    when(() => datasource.getMovies(1)).thenAnswer((_) async => movieModelsListMock);
 
-    final result = await repository.getMovies();
+    final result = await repository.getMovies(1);
 
     expect(result, const Right(movieModelsListMock));
-    verify(() => datasource.getMovies()).called(1);
+    verify(() => datasource.getMovies(1)).called(1);
   });
 
   test('Should throw an ServerFailure when data source call is unsucessfull', () async {
-    when(() => datasource.getMovies()).thenThrow(ServerException());
+    when(() => datasource.getMovies(1)).thenThrow(ServerException());
 
-    final result = await repository.getMovies();
+    final result = await repository.getMovies(1);
 
     expect(result, Left(ServerFailure()));
-    verify(() => datasource.getMovies()).called(1);
+    verify(() => datasource.getMovies(1)).called(1);
   });
 }
