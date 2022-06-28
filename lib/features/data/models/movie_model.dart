@@ -20,24 +20,24 @@ class MovieModel extends MovieEntity {
     average: average
   );
 
-    factory MovieModel.fromJson(Map<String, dynamic> json) => 
-      MovieModel(
-        id: json['id'] ?? "", 
-        title: json['title'] ?? "",
-        description: json['overview'] ?? "",
-        releaseDate: json['release_date'] ?? "",
-        image: json['poster_path'] != null ? MovieImagePrefix.movieImagePrefix() + json['poster_path'] : "",
-        backdropImage: json['backdrop_path'] != null ? MovieImagePrefix.movieImagePrefix() + json['backdrop_path'] : "",
-        average: json['vote_average'] != null ? double.parse(json['vote_average'].toString()) : 0,
-      );
+  factory MovieModel.fromJson(Map<String, dynamic> json) => 
+    MovieModel(
+      id: json['id'] ?? "", 
+      title: json['title'] ?? "",
+      description: json['overview'] ?? "",
+      releaseDate: json['release_date'] ?? "",
+      image: json['poster_path'] != null ? MovieImagePrefix.movieImagePrefix() + json['poster_path'] : "",
+      backdropImage: json['backdrop_path'] != null ? MovieImagePrefix.movieImagePrefix() + json['backdrop_path'] : "",
+      average: json['vote_average'] != null ? double.parse(json['vote_average'].toString()) : 0,
+    );
 
-    Map<String, dynamic> toJson() => {
-      'id': id,
-      'title': title,
-      'overview': description,
-      'release_date': releaseDate,
-      'poster_path': image,
-      'backdrop_path': backdropImage,
-      'vote_average': average
-    };
+  Map<String, dynamic> toJson() => {
+    'id': id,
+    'title': title,
+    'overview': description,
+    'release_date': releaseDate,
+    'poster_path': image,
+    'backdrop_path': backdropImage,
+    'vote_average': average
+  };
 }
