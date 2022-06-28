@@ -19,8 +19,6 @@ class HomeStore extends NotifierStore<Failure, MoviePagination> {
       setLoading(false);
     }
 
-    print(state.page);
-
     movieList.fold(
       (error) => setError(error), 
       (success) {
