@@ -1,5 +1,7 @@
 # Movie Database App (From [App Ideas](https://github.com/florinpop17/app-ideas))
 
+Flutter app using TDD and Clean Architecture
+
 **Tier:** 3-Advanced
 
 Find your next movie or create your watchlist with this App. It include reviews, rating, actors and anything you need to know about the movie.
@@ -9,8 +11,11 @@ Find your next movie or create your watchlist with this App. It include reviews,
 
 ## User Stories
 
--   [ ] User can see all the latest movie on the front page
+-   [x] User can see all the latest movie on the front page
+    -   [x] Paginated list
+    -   [ ] Clean paginated classes and tests
 -   [ ] User scroll down to see all other movies according to release date
+  -   [ ] Add filter at movies use case
 -   [ ] User can click on any of the movie to go to their own separate page
 -   [ ] User can then see all about the movie ratings, about, actors present on each separate movie page
 
