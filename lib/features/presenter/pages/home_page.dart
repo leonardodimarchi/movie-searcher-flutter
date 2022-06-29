@@ -3,7 +3,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:movie_searcher_flutter/features/data/models/movie_pagination.dart';
@@ -66,10 +65,8 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
           onError: (context, error) => Center(
             child: Text(
               'An error occurred, try again later.',
-              style: Theme.of(context)
-                  .textTheme
-                  .caption
-                  ?.copyWith(color: Colors.white),
+              textAlign: TextAlign.center,
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: const Color.fromARGB(255, 0, 0, 0)),
             ),
           ),
           onState: (context, MoviePagination moviePagination) {
@@ -89,16 +86,16 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                     },
                   ),
                   if(isLoadingMoreData)
-                    ...[
-                      Positioned(
-                          bottom: 0,
-                          child: SizedBox(
-                              height: 80,
-                              width: boxConstraints.maxWidth,
-                              child: const Center(
-                                child: CircularProgressIndicator(),
-                          ))),
-                    ]
+                    Positioned(
+                      bottom: 0,
+                      child: SizedBox(
+                      height: 80,
+                      width: boxConstraints.maxWidth,
+                        child: const Center(
+                          child: CircularProgressIndicator(),
+                        )
+                      )
+                    ),
                 ],
               );
             });

@@ -13,7 +13,7 @@ Find your next movie or create your watchlist with this App. It include reviews,
 
 -   [x] User can see all the latest movie on the front page
     -   [x] Paginated list
-    -   [ ] Clean paginated classes and tests
+    -   [x] Clean paginated classes and tests
 -   [ ] User scroll down to see all other movies according to release date
   -   [ ] Add filter at movies use case
 -   [ ] User can click on any of the movie to go to their own separate page
