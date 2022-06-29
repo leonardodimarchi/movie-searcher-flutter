@@ -16,7 +16,7 @@ class TmdbDatasourceImplementation implements MovieDatasource {
 
   @override
   Future<List<MovieModel>> getMovies(int page) async {
-    final url = TmdbEndpoints.discoverMovies(TmdbApiKeys.apiKey, page);
+    final url = TmdbEndpoints.discoverMovies(TmdbApiKeys.apiKey, page: page);
     final response = await httpClient.get(url);
 
     if (response.statusCode == 200) {
