@@ -75,10 +75,10 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                 children: [
                   ListView.separated(
                     controller: scrollController,
-                    itemCount: moviePagination.movies.length,
+                    itemCount: moviePagination.list.length,
                     itemBuilder: (context, index) {
                       return ListTile(
-                        title: Text(moviePagination.movies[index].title),
+                        title: Text(moviePagination.list[index].title),
                       );
                     },
                     separatorBuilder: (context, index) {

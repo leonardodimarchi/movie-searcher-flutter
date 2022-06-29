@@ -1,8 +1,6 @@
+import 'package:movie_searcher_flutter/features/data/models/common/base_pagination.dart';
 import 'package:movie_searcher_flutter/features/domain/entities/movie_entity.dart';
 
-class MoviePagination {
-  late int page;
-  List<MovieEntity> movies;
-
-  MoviePagination({ this.page = 1, this.movies = const [] });
+class MoviePagination extends BasePagination<MovieEntity> {
+    MoviePagination({ int page = 1, List<MovieEntity> list = const [] }) : super(page: page, list: list);
 }

@@ -35,7 +35,7 @@ void main() {
 
     homeStore.observer(
       onState: (state) {
-        expect(state, MoviePagination(page: 1, movies: movieEntityList));
+        expect(state, MoviePagination(page: 1, list: movieEntityList));
         verify(() => mockUsecase(1)).called(1);
       },
     );

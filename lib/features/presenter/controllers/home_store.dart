@@ -22,7 +22,7 @@ class HomeStore extends NotifierStore<Failure, MoviePagination> {
     movieList.fold(
       (error) => setError(error), 
       (success) {
-        MoviePagination movie = MoviePagination(page: state.page + 1, movies: [...state.movies, ...success]);
+        MoviePagination movie = MoviePagination(page: state.page + 1, list: [...state.list, ...success]);
 
         update(movie);
       },
