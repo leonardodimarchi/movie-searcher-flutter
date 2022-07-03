@@ -18,10 +18,10 @@ class MovieBanner extends StatelessWidget {
             Container(
               decoration: BoxDecoration(
                   image: DecorationImage(
-                image: NetworkImage(imageUrl!),
-                fit: BoxFit.fitWidth,
-                alignment: Alignment.topCenter,
-              )),
+                    image: NetworkImage(imageUrl!),
+                    fit: BoxFit.cover,                  
+                    alignment: Alignment.topCenter,
+                  )),
             ),
           if (imageUrl == null)
             const SizedBox(

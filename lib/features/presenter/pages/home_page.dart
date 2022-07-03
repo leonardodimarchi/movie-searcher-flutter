@@ -64,48 +64,64 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
       body: SafeArea(
         child: ScopedBuilder(
           store: store,
-          onLoading: (context) =>  const Center(child: CircularProgressIndicator()),
+          onLoading: (context) =>
+              const Center(child: CircularProgressIndicator()),
           onError: (context, error) => Center(
-                child: Text(
-                  'An error occurred, try again later.',
-                  textAlign: TextAlign.center,
-                  style: Theme.of(context)
-                      .textTheme
-                      .titleMedium
-                      ?.copyWith(color: Colors.white70),
-                ),
-              ),
+            child: Text(
+              'An error occurred, try again later.',
+              textAlign: TextAlign.center,
+              style: Theme.of(context)
+                  .textTheme
+                  .titleMedium
+                  ?.copyWith(color: Colors.white70),
+            ),
+          ),
           onState: (context, MoviePagination moviePagination) {
-            return  SingleChildScrollView(
+            return SingleChildScrollView(
               controller: scrollController,
               child: Column(
                 children: [
                   MovieBanner(
                     backgroundColor,
-                    imageUrl: moviePagination.list[0].image,
+                    imageUrl: moviePagination.list[0].backdropImage,
                   ),
                   Stack(
                     children: [
                       ListView.builder(
-                    itemCount: moviePagination.list.length,
-                    physics: const BouncingScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    shrinkWrap: true,
-                    itemBuilder: (context, index) => MovieCard(moviePagination.list[index])                  ,
-                  ),
-
-                  if (isLoadingMoreData)
-                    Positioned(
-                      bottom: 0,
-                      height: 80,
-                      child: SizedBox(
-                        width: size.width,
-                        child: const Center(
-                          child: CircularProgressIndicator(),
+                        itemCount: moviePagination.list.length,
+                        physics: const BouncingScrollPhysics(),
+                        scrollDirection: Axis.vertical,
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) => Container(
+                          alignment: Alignment.center,
+                          child: Container(
+                            width: 250,
+                            margin: const EdgeInsets.only(
+                              bottom: 20, 
+                              top: 20,
+                            ),
+                            constraints: BoxConstraints.expand(
+                              height: 400,
+                              width: size.width * 0.7,
+                            ),
+                            child: Center(
+                              child: MovieCard(moviePagination.list[index]),
+                            )
+                          ),
                         ),
                       ),
-                    )
-                    ],                
+                      if (isLoadingMoreData)
+                        Positioned(
+                          bottom: 0,
+                          height: 80,
+                          child: SizedBox(
+                            width: size.width,
+                            child: const Center(
+                              child: CircularProgressIndicator(),
+                            ),
+                          ),
+                        )
+                    ],
                   )
                 ],
               ),
