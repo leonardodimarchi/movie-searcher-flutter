@@ -9,13 +9,13 @@ class HomeStore extends NotifierStore<Failure, MoviePagination> {
   HomeStore(this.usecase) : super(MoviePagination());
 
   getMovies() async {
-    if (state.page == 1) {
+    if (state.page == 0) {
       setLoading(true);
     }
 
     final movieList = await usecase(state.page + 1);
 
-    if (state.page == 1) {
+    if (state.page == 0) {
       setLoading(false);
     }
 

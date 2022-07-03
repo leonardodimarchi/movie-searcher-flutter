@@ -8,6 +8,9 @@ import 'package:flutter_triple/flutter_triple.dart';
 import 'package:movie_searcher_flutter/features/data/models/movie_pagination.dart';
 import 'package:movie_searcher_flutter/features/domain/entities/movie_entity.dart';
 import 'package:movie_searcher_flutter/features/presenter/controllers/home_store.dart';
+import 'package:movie_searcher_flutter/features/presenter/widgets/movie_banner.dart';
+
+import '../widgets/movie_card.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -18,6 +21,8 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends ModularState<HomePage, HomeStore> {
   final ScrollController scrollController = ScrollController();
+  final Color backgroundColor = Colors.grey[850]!;
+
   bool isLoadingMoreData = false;
 
   @override
@@ -52,53 +57,59 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
 
   @override
   Widget build(BuildContext context) {
+    final Size size = MediaQuery.of(context).size;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Movies'),
-        backgroundColor: Colors.blueAccent,
-      ),
+      backgroundColor: backgroundColor,
       body: SafeArea(
         child: ScopedBuilder(
           store: store,
-          onLoading: (context) =>
-              const Center(child: CircularProgressIndicator()),
+          onLoading: (context) =>  const Center(child: CircularProgressIndicator()),
           onError: (context, error) => Center(
-            child: Text(
-              'An error occurred, try again later.',
-              textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: const Color.fromARGB(255, 0, 0, 0)),
-            ),
-          ),
+                child: Text(
+                  'An error occurred, try again later.',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(color: Colors.white70),
+                ),
+              ),
           onState: (context, MoviePagination moviePagination) {
-            return LayoutBuilder(builder: (context, boxConstraints) {
-              return Stack(
+            return  SingleChildScrollView(
+              controller: scrollController,
+              child: Column(
                 children: [
-                  ListView.separated(
-                    controller: scrollController,
-                    itemCount: moviePagination.list.length,
-                    itemBuilder: (context, index) {
-                      return ListTile(
-                        title: Text(moviePagination.list[index].title),
-                      );
-                    },
-                    separatorBuilder: (context, index) {
-                      return const Divider(height: 1);
-                    },
+                  MovieBanner(
+                    backgroundColor,
+                    imageUrl: moviePagination.list[0].image,
                   ),
-                  if(isLoadingMoreData)
+                  Stack(
+                    children: [
+                      ListView.builder(
+                    itemCount: moviePagination.list.length,
+                    physics: const BouncingScrollPhysics(),
+                    scrollDirection: Axis.vertical,
+                    shrinkWrap: true,
+                    itemBuilder: (context, index) => MovieCard(moviePagination.list[index])                  ,
+                  ),
+
+                  if (isLoadingMoreData)
                     Positioned(
                       bottom: 0,
-                      child: SizedBox(
                       height: 80,
-                      width: boxConstraints.maxWidth,
+                      child: SizedBox(
+                        width: size.width,
                         child: const Center(
                           child: CircularProgressIndicator(),
-                        )
-                      )
-                    ),
+                        ),
+                      ),
+                    )
+                    ],                
+                  )
                 ],
-              );
-            });
+              ),
+            );
           },
         ),
       ),
