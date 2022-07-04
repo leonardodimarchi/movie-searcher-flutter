@@ -16,6 +16,7 @@ Find your next movie or create your watchlist with this App. It include reviews,
     -   [x] Clean paginated classes and tests
 -   [x] User scroll down to see all other movies according to release date
     -   [ ] Movie card styling
+    -   [ ] Add movie categories
   -   [ ] Add filter at movies use case
 -   [ ] User can click on any of the movie to go to their own separate page
 -   [ ] User can then see all about the movie ratings, about, actors present on each separate movie page
