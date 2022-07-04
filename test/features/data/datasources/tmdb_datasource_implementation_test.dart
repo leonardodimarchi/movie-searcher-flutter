@@ -3,6 +3,7 @@ import 'package:mocktail/mocktail.dart';
 import 'package:movie_searcher_flutter/core/errors/exceptions.dart';
 import 'package:movie_searcher_flutter/core/http_client/http_client.dart';
 import 'package:movie_searcher_flutter/core/utils/keys/tmdb_api_keys.dart';
+import 'package:movie_searcher_flutter/features/data/datasources/endpoints/tmdb_endpoints.dart';
 import 'package:movie_searcher_flutter/features/data/datasources/movie_datasource.dart';
 import 'package:movie_searcher_flutter/features/data/datasources/tmdb_datasource_implementation.dart';
 import 'package:movie_searcher_flutter/features/data/models/movie_model.dart';
@@ -22,7 +23,7 @@ void main() {
     datasource = TmdbDatasourceImplementation(httpClient: httpClient);
   });
 
-  final expectedUrl = 'https://api.themoviedb.org/3/discover/movie?api_key=' + TmdbApiKeys.apiKey + "&page=1";
+  final expectedUrl = TmdbEndpoints.discoverMovies(TmdbApiKeys.apiKey);
 
   void successMock() {
     when(() => httpClient.get(any()))
