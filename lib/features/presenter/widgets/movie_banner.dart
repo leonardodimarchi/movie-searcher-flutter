@@ -14,30 +14,35 @@ class MovieBanner extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          if (imageUrl != null)
-            Container(
-              decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: NetworkImage(imageUrl!),
-                    fit: BoxFit.cover,                  
-                    alignment: Alignment.topCenter,
-                  )),
+          Container(
+            color: Colors.grey[900],
+            child: const Center(
+              child: CircularProgressIndicator(),
             ),
-          if (imageUrl == null)
-            const SizedBox(
-              child: Center(
-                child: CircularProgressIndicator(),
-              ),
-            ),
+          ),
+          Container(
+            decoration: BoxDecoration(
+                image: DecorationImage(
+              image: NetworkImage(imageUrl!),
+              fit: BoxFit.cover,
+              alignment: Alignment.topCenter,
+            )),
+          ),
           Positioned(
               top: 255,
               child: Container(
                 height: 50,
                 width: MediaQuery.of(context).size.width,
                 decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      stops: const [0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.9],
-                      colors: [
+                    gradient: LinearGradient(stops: const [
+                  0.1,
+                  0.2,
+                  0.3,
+                  0.4,
+                  0.5,
+                  0.6,
+                  0.9
+                ], colors: [
                   backgroundColor.withOpacity(0.1),
                   backgroundColor.withOpacity(0.2),
                   backgroundColor.withOpacity(0.3),

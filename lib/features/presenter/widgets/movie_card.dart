@@ -19,6 +19,12 @@ class MovieCard extends StatelessWidget {
         child: Stack(
           alignment: Alignment.center,
           children: [
+            Container(
+              color: Colors.grey[900],
+              child: const Center(
+                child: CircularProgressIndicator(),
+              ),
+            ),
             Image(
               image: NetworkImage(movie.image),
               height: double.infinity,
@@ -41,7 +47,7 @@ class MovieCard extends StatelessWidget {
                         children: [
                           Flexible(
                             child: Padding(
-                              padding: const EdgeInsets.only(right: 8),
+                              padding: const EdgeInsets.only(right: 10),
                               child: Text(
                                 movie.title,
                                 maxLines: 2,
