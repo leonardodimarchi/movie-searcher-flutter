@@ -86,16 +86,16 @@ void main() {
     );
   });
 
-  // test('Should return a failure from the GetGenresUsecase when there is an error', () async {
-  //   when(() => mockedGetGenresUsecase(any())).thenAnswer((_) async => Left(mockedFailure));
+  test('Should return a failure from the GetGenresUsecase when there is an error', () async {
+    when(() => mockedGetGenresUsecase(any())).thenAnswer((_) async => Left(mockedFailure));
 
-  //   await homeStore.getMovies();
+    await homeStore.getGenres();
 
-  //   homeStore.observer(
-  //     onError: (error) {
-  //       expect(error, mockedFailure);
-  //       verify(() => mockedGetMoviesUsecase())).called(1);
-  //     }
-  //   );
-  // });
+    homeStore.observer(
+      onError: (error) {
+        expect(error, mockedFailure);
+        verify(() => mockedGetGenresUsecase(noParams)).called(1);
+      }
+    );
+  });
 }
