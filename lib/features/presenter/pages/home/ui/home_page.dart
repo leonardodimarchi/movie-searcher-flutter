@@ -7,10 +7,11 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:movie_searcher_flutter/features/data/models/movie_pagination.dart';
 import 'package:movie_searcher_flutter/features/domain/entities/movie_entity.dart';
-import 'package:movie_searcher_flutter/features/presenter/controllers/home_store.dart';
+import 'package:movie_searcher_flutter/features/presenter/pages/home/viewmodel/home_viewmodel.dart';
 import 'package:movie_searcher_flutter/features/presenter/widgets/movie_banner.dart';
 
-import '../widgets/movie_card.dart';
+import '../../../widgets/movie_card.dart';
+import '../controller/home_store.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -76,7 +77,9 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                   ?.copyWith(color: Colors.white70),
             ),
           ),
-          onState: (context, MoviePagination moviePagination) {
+          onState: (context, HomeViewModel state) {
+            MoviePagination moviePagination = state.moviePagination;
+
             return SingleChildScrollView(
               controller: scrollController,
               child: Column(
