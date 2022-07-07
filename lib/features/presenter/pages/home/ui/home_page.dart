@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:movie_searcher_flutter/features/data/models/movie_pagination.dart';
+import 'package:movie_searcher_flutter/features/domain/entities/genre_entity.dart';
 import 'package:movie_searcher_flutter/features/domain/entities/movie_entity.dart';
 import 'package:movie_searcher_flutter/features/presenter/pages/home/viewmodel/home_viewmodel.dart';
 import 'package:movie_searcher_flutter/features/presenter/widgets/movie_banner.dart';
@@ -30,6 +31,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
   void initState() {
     super.initState();
     store.getMovies();
+    store.getGenres();
 
     scrollController.addListener(() async {
       ScrollPosition position = scrollController.position;
@@ -79,15 +81,17 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
           ),
           onState: (context, HomeViewModel state) {
             MoviePagination moviePagination = state.moviePagination;
+            List<GenreEntity> genres = state.genres;
 
             return SingleChildScrollView(
               controller: scrollController,
               child: Column(
                 children: [
-                  MovieBanner(
-                    backgroundColor,
-                    imageUrl: moviePagination.list[0].backdropImage,
-                  ),
+                if (moviePagination.list.isNotEmpty)
+                    MovieBanner(
+                      backgroundColor,
+                      imageUrl: moviePagination.list[0].backdropImage,
+                    ),
                   Stack(
                     children: [
                       ListView.builder(
@@ -108,7 +112,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                               width: size.width * 0.7,
                             ),
                             child: Center(
-                              child: MovieCard(moviePagination.list[index]),
+                              child: MovieCard(movie: moviePagination.list[index], genres: genres),
                             )
                           ),
                         ),
