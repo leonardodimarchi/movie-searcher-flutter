@@ -83,7 +83,14 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
             MoviePagination moviePagination = state.moviePagination;
             List<GenreEntity> genres = state.genres;
 
-            return SingleChildScrollView(
+            return ScrollConfiguration(
+              behavior: const ScrollBehavior(
+                androidOverscrollIndicator: AndroidOverscrollIndicator.stretch
+              ),
+              child: GlowingOverscrollIndicator(
+                axisDirection: AxisDirection.down,
+                color: backgroundColor,
+                child: SingleChildScrollView(
               controller: scrollController,
               child: Column(
                 children: [
@@ -132,6 +139,8 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                   )
                 ],
               ),
+            ),
+              )
             );
           },
         ),
