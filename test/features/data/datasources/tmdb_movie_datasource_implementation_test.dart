@@ -48,7 +48,8 @@ void main() {
         releaseDate: "2021-12-15",
         image: "https://image.tmdb.org/t/p/original/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
         backdropImage: "https://image.tmdb.org/t/p/original/iQFcwSGbZXMkeyKrxbPnwnRo5fl.jpg",
-        average: 8.3
+        average: 8.3,
+        genreIds: [],
       ),
       MovieModel(
         id: 414906,
@@ -57,7 +58,8 @@ void main() {
         releaseDate: "2022-03-01",
         image: "https://image.tmdb.org/t/p/original/74xTEgt7R36Fpooo50r9T25onhq.jpg",
         backdropImage: "https://image.tmdb.org/t/p/original/5P8SmMzSNYikXpxil6BYzJ16611.jpg",
-        average: 8
+        average: 8,
+        genreIds: [],
       ),
     ];
 

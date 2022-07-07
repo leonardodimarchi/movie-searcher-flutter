@@ -6,7 +6,8 @@ const movieEntityJsonMock = """
     "release_date": "2021-12-15",
     "poster_path": "/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
     "backdrop_path": "/iQFcwSGbZXMkeyKrxbPnwnRo5fl.jpg",
-    "vote_average": 8.3
+    "vote_average": 8.3,
+    "genre_ids": [1, 2]
   }
 """;
 
