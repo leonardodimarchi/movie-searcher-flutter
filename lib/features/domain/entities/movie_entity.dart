@@ -8,6 +8,7 @@ class MovieEntity extends Equatable {
   final String image;
   final String backdropImage;
   final double average;
+  final List<int>? genreIds;
 
   const MovieEntity({
     required this.id, 
@@ -16,7 +17,8 @@ class MovieEntity extends Equatable {
     required this.releaseDate,
     required this.image,
     required this.backdropImage,
-    required this.average
+    required this.average,
+    this.genreIds
   });
 
   @override
@@ -27,6 +29,7 @@ class MovieEntity extends Equatable {
     releaseDate,
     image,
     backdropImage,
-    average
+    average,
+    genreIds
   ];
 }

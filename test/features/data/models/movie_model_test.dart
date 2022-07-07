@@ -32,6 +32,7 @@ void main() {
       "poster_path": "https://image.tmdb.org/t/p/original/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
       "backdrop_path": "https://image.tmdb.org/t/p/original/iQFcwSGbZXMkeyKrxbPnwnRo5fl.jpg",
       "vote_average": 8.3,
+      "genre_ids": [1, 2]
     };
 
     final result = movieModelMock.toJson();

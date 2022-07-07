@@ -10,6 +10,7 @@ class MovieModel extends MovieEntity {
     required String image,
     required String backdropImage,
     required double average,
+    List<int>? genreIds
   }) : super(
     id: id, 
     title: title, 
@@ -17,7 +18,8 @@ class MovieModel extends MovieEntity {
     releaseDate: releaseDate,
     image: image,
     backdropImage: backdropImage,
-    average: average
+    average: average,
+    genreIds: genreIds,
   );
 
   factory MovieModel.fromJson(Map<String, dynamic> json) => 
@@ -29,6 +31,7 @@ class MovieModel extends MovieEntity {
       image: json['poster_path'] != null ? MovieImagePrefix.movieImagePrefix() + json['poster_path'] : "",
       backdropImage: json['backdrop_path'] != null ? MovieImagePrefix.movieImagePrefix() + json['backdrop_path'] : "",
       average: json['vote_average'] != null ? double.parse(json['vote_average'].toString()) : 0,
+      genreIds: json['genre_ids'] != null ? List.from(json['genre_ids']) : [],
     );
 
   Map<String, dynamic> toJson() => {
@@ -38,6 +41,7 @@ class MovieModel extends MovieEntity {
     'release_date': releaseDate,
     'poster_path': image,
     'backdrop_path': backdropImage,
-    'vote_average': average
+    'vote_average': average,
+    'genre_ids': genreIds,
   };
 }
