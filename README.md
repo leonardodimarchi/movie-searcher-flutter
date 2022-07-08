@@ -18,7 +18,7 @@ Find your next movie or create your watchlist with this App. It include reviews,
     -   [x] Movie card styling
     -   [x] Image loading
     -   [x] Add movie categories
-    -   [ ] Pull to refresh
+    -   [x] Pull to refresh
     -   [x] Bounce effect color
   -   [ ] Add filter at movies use case
   -   [ ] Search
