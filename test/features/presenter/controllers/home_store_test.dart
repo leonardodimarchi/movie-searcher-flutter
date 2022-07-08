@@ -98,4 +98,30 @@ void main() {
       }
     );
   });
+
+  test('Should call getMovies with page 1 when calling PullRefresh', () async {
+    when(() => mockedGetMoviesUsecase(any())).thenAnswer((_) async => const Right(movieEntityList));
+
+    await homeStore.refreshMovieList();
+
+    homeStore.observer(
+      onState: (state) {
+        expect(state.moviePagination, MoviePagination(page: 1, list: movieEntityList));
+        verify(() => mockedGetMoviesUsecase(1)).called(1);
+      },
+    );
+  });
+
+  // test('Should return a failure from the GetMoviesUseCase when there is an error at PullRefresh', () async {
+  //   when(() => mockedGetMoviesUsecase(any())).thenAnswer((_) async => Left(mockedFailure));
+
+  //   await homeStore.getMovies();
+
+  //   homeStore.observer(
+  //     onError: (error) {
+  //       expect(error, mockedFailure);
+  //       verify(() => mockedGetMoviesUsecase(1)).called(1);
+  //     }
+  //   );
+  // });
 }

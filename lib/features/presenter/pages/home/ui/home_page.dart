@@ -90,7 +90,11 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
               child: GlowingOverscrollIndicator(
                 axisDirection: AxisDirection.down,
                 color: backgroundColor,
-                child: SingleChildScrollView(
+                child: RefreshIndicator(
+                  onRefresh: () async {
+                      store.refreshMovieList();
+                  },
+                  child: SingleChildScrollView(
               controller: scrollController,
               child: Column(
                 children: [
@@ -140,6 +144,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                 ],
               ),
             ),
+                )
               )
             );
           },

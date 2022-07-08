@@ -39,13 +39,28 @@ class HomeStore extends NotifierStore<Failure, HomeViewModel> {
   }
 
   getGenres() async {
-   final genres = await getGenresUsecase(NoParams());
+    final genres = await getGenresUsecase(NoParams());
 
-   genres.fold(
-    (error) => setError(error),
-    (success) {
-      update(HomeViewModel(moviePagination: state.moviePagination, genres: success));
-    }
-   );
+    genres.fold((error) => setError(error), (success) {
+      update(HomeViewModel(
+          moviePagination: state.moviePagination, genres: success));
+    });
+  }
+
+  refreshMovieList() async {
+    int page = 0;
+
+    final movieList = await getMoviesUsecase(page + 1);
+
+    movieList.fold(
+      (error) => setError(error),
+      (success) {
+        MoviePagination movies = MoviePagination(
+            page: page + 1,
+            list: success);
+
+        update(HomeViewModel(moviePagination: movies, genres: state.genres));
+      },
+    );
   }
 }
