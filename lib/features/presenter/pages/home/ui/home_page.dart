@@ -91,6 +91,9 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                 axisDirection: AxisDirection.down,
                 color: backgroundColor,
                 child: RefreshIndicator(
+                  backgroundColor: backgroundColor,
+                  color: Colors.white,
+                  strokeWidth: 2,
                   onRefresh: () async {
                       store.refreshMovieList();
                   },
