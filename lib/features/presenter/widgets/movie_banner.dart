@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 
 class MovieBanner extends StatelessWidget {
@@ -14,20 +15,17 @@ class MovieBanner extends StatelessWidget {
       child: Stack(
         clipBehavior: Clip.none,
         children: [
-          Container(
-            color: Colors.grey[900],
-            child: const Center(
-              child: CircularProgressIndicator(),
+          if (imageUrl != null)
+            Center(
+              child: CachedNetworkImage(
+                imageUrl: imageUrl!,
+                fit: BoxFit.fitHeight,
+                height: 300,
+                placeholder: (context, url) =>
+                    const Center(child: CircularProgressIndicator()),
+                errorWidget: (context, url, error) => const Icon(Icons.error),
+              ),
             ),
-          ),
-          Container(
-            decoration: BoxDecoration(
-                image: DecorationImage(
-              image: NetworkImage(imageUrl!),
-              fit: BoxFit.cover,
-              alignment: Alignment.topCenter,
-            )),
-          ),
           Positioned(
               top: 255,
               child: Container(
