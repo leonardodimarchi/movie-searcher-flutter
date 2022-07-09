@@ -23,7 +23,12 @@ class MovieRepositoryImplementation extends MovieRepository {
   }
 
   @override
-  Future<Either<Failure, MovieEntity>> getMovie(int id) {
-    throw UnimplementedError();
+  Future<Either<Failure, MovieEntity>> getMovie(int id) async {
+    try {
+      final result = await datasource.getMovie(id);
+      return Right(result);
+    } on ServerException {
+      return Left(ServerFailure());
+    }
   }
 }

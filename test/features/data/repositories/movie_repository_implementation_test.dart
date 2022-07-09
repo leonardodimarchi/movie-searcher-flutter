@@ -8,9 +8,7 @@ import 'package:movie_searcher_flutter/features/data/repositories/movie_reposito
 
 import '../../../mocks/movie_model_mock.dart';
 
-class MockMovieDatasource extends Mock implements MovieDatasource {
-
-}
+class MockMovieDatasource extends Mock implements MovieDatasource {}
 
 void main() {
   late MovieRepositoryImplementation repository;
@@ -28,21 +26,63 @@ void main() {
     movieModelMock,
   ];
 
-  test('Should return a list of MovieModel when calls the datasource', () async {
-    when(() => datasource.getMovies(1)).thenAnswer((_) async => movieModelsListMock);
+  group('getMovies', () {
+    void successMock() {
+      when(() => datasource.getMovies(any()))
+          .thenAnswer((_) async => movieModelsListMock);
+    }
 
-    final result = await repository.getMovies(1);
+    void failureMock() {
+      when(() => datasource.getMovies(any())).thenThrow(ServerException());
+    }
 
-    expect(result, const Right(movieModelsListMock));
-    verify(() => datasource.getMovies(1)).called(1);
+    test('Should return a list of MovieModel when calls the datasource', () async {
+      successMock();
+
+      final result = await repository.getMovies(1);
+
+      expect(result, const Right(movieModelsListMock));
+      verify(() => datasource.getMovies(1)).called(1);
+    });
+
+    test('Should throw an ServerFailure when data source call is unsucessfull', () async {
+      failureMock();
+
+      final result = await repository.getMovies(1);
+
+      expect(result, Left(ServerFailure()));
+      verify(() => datasource.getMovies(1)).called(1);
+    });
   });
 
-  test('Should throw an ServerFailure when data source call is unsucessfull', () async {
-    when(() => datasource.getMovies(1)).thenThrow(ServerException());
+  group('getMovie', () {
+    const mockedMovieModel = movieModelMock;
 
-    final result = await repository.getMovies(1);
+    void successMock() {
+      when(() => datasource.getMovie(any()))
+          .thenAnswer((_) async => mockedMovieModel);
+    }
 
-    expect(result, Left(ServerFailure()));
-    verify(() => datasource.getMovies(1)).called(1);
+    void failureMock() {
+      when(() => datasource.getMovie(any())).thenThrow(ServerException());
+    }
+
+    test('Should return a MovieModel when calling the datasource', () async {
+      successMock();
+
+      final result = await repository.getMovie(mockedMovieModel.id);
+
+      expect(result, const Right(mockedMovieModel));
+      verify(() => datasource.getMovie(mockedMovieModel.id)).called(1);    
+    });
+
+    test('Should return a failure when datasource call is unsucessful', () async {
+      failureMock();
+
+      final result = await repository.getMovie(mockedMovieModel.id);
+
+      expect(result, Left(ServerFailure()));
+      verify(() => datasource.getMovie(mockedMovieModel.id)).called(1);    
+    });
   });
 }

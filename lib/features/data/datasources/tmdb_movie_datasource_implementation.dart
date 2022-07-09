@@ -29,4 +29,10 @@ class TmdbMovieDatasourceImplementation implements MovieDatasource {
       throw ServerException();
     }
   }
+
+  @override
+  Future<MovieModel> getMovie(int id) {
+    // TODO: implement getMovie
+    throw UnimplementedError();
+  }
 }
