@@ -21,4 +21,9 @@ class MovieRepositoryImplementation extends MovieRepository {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, MovieEntity>> getMovie(int id) {
+    throw UnimplementedError();
+  }
 }
