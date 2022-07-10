@@ -112,16 +112,16 @@ void main() {
     );
   });
 
-  // test('Should return a failure from the GetMoviesUseCase when there is an error at PullRefresh', () async {
-  //   when(() => mockedGetMoviesUsecase(any())).thenAnswer((_) async => Left(mockedFailure));
+  test('Should return a failure from the GetMoviesUseCase when there is an error at PullRefresh', () async {
+    when(() => mockedGetMoviesUsecase(any())).thenAnswer((_) async => Left(mockedFailure));
 
-  //   await homeStore.getMovies();
+    await homeStore.getMovies();
 
-  //   homeStore.observer(
-  //     onError: (error) {
-  //       expect(error, mockedFailure);
-  //       verify(() => mockedGetMoviesUsecase(1)).called(1);
-  //     }
-  //   );
-  // });
+    homeStore.observer(
+      onError: (error) {
+        expect(error, mockedFailure);
+        verify(() => mockedGetMoviesUsecase(1)).called(1);
+      }
+    );
+  });
 }
