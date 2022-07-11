@@ -14,7 +14,7 @@ class MovieModule extends Module {
   
   @override
   final List<Bind> binds = [
-    Bind.factory((i) => MovieStore(movieId: i.args.params['id'], getGenresUsecase: i(), getMovieUsecase: i())),
+    Bind.factory((i) => MovieStore(movieId: int.parse(i.args.params['id']), getGenresUsecase: i(), getMovieUsecase: i())),
     Bind.lazySingleton((i) => GetGenresUsecase(repository: i())),
     Bind.lazySingleton((i) => GetMovieUsecase(repository: i())),
     Bind.lazySingleton((i) => GenreRepositoryImplementation(datasource: i())),
@@ -27,6 +27,6 @@ class MovieModule extends Module {
   // Provide all the routes for your module
   @override
   final List<ModularRoute> routes = [
-    ChildRoute(Modular.initialRoute, child: (_, args) => const MoviePage()),
+    ChildRoute('/:id', child: (_, args) => const MoviePage()),
   ];
 }

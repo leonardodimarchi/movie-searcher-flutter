@@ -9,6 +9,7 @@ import 'package:movie_searcher_flutter/features/data/models/movie_pagination.dar
 import 'package:movie_searcher_flutter/features/domain/entities/genre_entity.dart';
 import 'package:movie_searcher_flutter/features/domain/entities/movie_entity.dart';
 import 'package:movie_searcher_flutter/features/presenter/pages/home/viewmodel/home_viewmodel.dart';
+import 'package:movie_searcher_flutter/features/presenter/pages/movie/viewmodel/movie_viewmodel.dart';
 import 'package:movie_searcher_flutter/features/presenter/widgets/movie_banner.dart';
 
 import '../../../widgets/movie_card.dart';
@@ -22,9 +23,36 @@ class MoviePage extends StatefulWidget {
 }
 
 class _MoviePageState extends ModularState<MoviePage, MovieStore> {
+  final Color backgroundColor = Colors.grey[850]!;
+
+  @override
+  void initState() {
+    super.initState();
+
+    store.initialize();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    return Scaffold(
+      backgroundColor: backgroundColor,
+      body: ScopedBuilder(
+          store: store,
+          onLoading: (context) =>
+              const Center(child: CircularProgressIndicator()),
+          onError: (context, error) => Center(
+                child: Text(
+                  'An error occurred, try again later.',
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context)
+                      .textTheme
+                      .titleMedium
+                      ?.copyWith(color: Colors.white70),
+                ),
+              ),
+          onState: (context, MovieViewModel state) {
+            return Text(state.movie.title);
+          }),
+    );
   }
 }

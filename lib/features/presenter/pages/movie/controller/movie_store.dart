@@ -28,6 +28,15 @@ class MovieStore extends NotifierStore<Failure, MovieViewModel> {
             ),
             genres: []));
 
+  initialize() async {
+    setLoading(true);
+
+    await getMovie();
+    await getGenres();
+
+    setLoading(false);
+  }
+
   getMovie() async {
     final movie = await getMovieUsecase(movieId);
 

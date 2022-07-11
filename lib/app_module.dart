@@ -7,6 +7,6 @@ class AppModule extends Module {
   @override
   final List<ModularRoute> routes = [
     ModuleRoute('/', module: HomeModule()),
-    ModuleRoute('/movie/:id', module: MovieModule()),
+    ModuleRoute('/movie', module: MovieModule()),
   ];
 }
