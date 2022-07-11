@@ -81,5 +81,19 @@ void main() {
         },
       );
     });
+
+    test(
+        'Should return a failure from the GetMoviesUseCase when there is an error',
+        () async {
+      when(() => getGenresUsecase(any()))
+          .thenAnswer((_) async => Left(ServerFailure()));
+
+      await movieStore.getGenres();
+
+      movieStore.observer(onError: (error) {
+        expect(error, ServerFailure());
+        verify(() => getGenresUsecase(noParams)).called(1);
+      });
+    });
   });
 }
