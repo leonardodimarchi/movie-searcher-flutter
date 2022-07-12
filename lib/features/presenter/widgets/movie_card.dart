@@ -26,7 +26,7 @@ class MovieCard extends StatelessWidget {
     }
 
     return GestureDetector(
-        onTap: () => Modular.to.navigate('/movie/' + movie.id.toString()),
+        onTap: () => Modular.to.pushNamed('/movie/' + movie.id.toString()),
         child: Container(
             height: size.height,
             width: size.width,

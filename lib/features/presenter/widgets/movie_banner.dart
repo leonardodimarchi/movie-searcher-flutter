@@ -3,15 +3,16 @@ import 'package:flutter/material.dart';
 
 class MovieBanner extends StatelessWidget {
   final String? imageUrl;
+  final double? height;
   final Color backgroundColor;
 
-  const MovieBanner(this.backgroundColor, {this.imageUrl, Key? key})
+  const MovieBanner(this.backgroundColor, {this.imageUrl, this.height, Key? key})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 300,
+      height: height ?? 300,
       child: Stack(
         clipBehavior: Clip.none,
         children: [
@@ -20,14 +21,14 @@ class MovieBanner extends StatelessWidget {
               child: CachedNetworkImage(
                 imageUrl: imageUrl!,
                 fit: BoxFit.fitHeight,
-                height: 300,
+                height: height ?? 300,
                 placeholder: (context, url) =>
                     const Center(child: CircularProgressIndicator()),
                 errorWidget: (context, url, error) => const Icon(Icons.error),
               ),
             ),
           Positioned(
-              top: 255,
+              top: (height ?? 300) - 46,
               child: Container(
                 height: 50,
                 width: MediaQuery.of(context).size.width,
