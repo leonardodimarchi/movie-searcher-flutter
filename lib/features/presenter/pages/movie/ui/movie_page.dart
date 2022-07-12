@@ -118,7 +118,7 @@ class _MoviePageState extends ModularState<MoviePage, MovieStore> {
                                 ))),
                                 Positioned(
                           left: 20,
-                          top: 30,
+                          top: 65,
                           child: BackButton(
                             color: Colors.white,
                             onPressed: () => Modular.to.navigate('/')
