@@ -111,6 +111,7 @@ class _MoviePageState extends ModularState<MoviePage, MovieStore> {
                                       )),
                                   const SizedBox(height: 15),
                                   Row(
+                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                     children: [
                                       Flexible(
                                         child: Text(
