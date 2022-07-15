@@ -55,6 +55,10 @@ class _MoviePageState extends ModularState<MoviePage, MovieStore> {
             final releaseDate = DateFormat('dd/MM/yyyy')
                 .format(DateTime.parse(state.movie.releaseDate));
 
+            List<String> genreNames = [];
+
+            genreNames = state.movie.genres.map((genre) => genre.name).toList();
+
             return ScrollConfiguration(
                 behavior: const ScrollBehavior(
                     androidOverscrollIndicator:
@@ -196,6 +200,44 @@ class _MoviePageState extends ModularState<MoviePage, MovieStore> {
                                           TextSpan(text: releaseDate)
                                         ],
                                       ))),
+                                  const SizedBox(height: 15),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Wrap(
+                                      spacing: 5,
+                                      runSpacing: 5,
+                                      children: [
+                                        for (String genre in genreNames)
+                                          Container(
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey[800]!,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(15)),
+                                                border: Border.all(
+                                                    width: 2,
+                                                    color: Colors.grey[700]!)),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 3,
+                                                  bottom: 3,
+                                                  left: 8,
+                                                  right: 8),
+                                              child: Text(
+                                                genre,
+                                                maxLines: 1,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.copyWith(
+                                                      color: Colors.white70,
+                                                    ),
+                                              ),
+                                            ),
+                                          )
+                                      ],
+                                    ),
+                                  )
                                 ],
                               ))),
                     ])));

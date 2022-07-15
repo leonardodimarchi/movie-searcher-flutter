@@ -1,8 +1,9 @@
 import 'package:movie_searcher_flutter/features/data/datasources/endpoints/movie_image_prefix.dart';
-import 'package:movie_searcher_flutter/features/domain/entities/movie_entity.dart';
+import 'package:movie_searcher_flutter/features/data/models/genre_model.dart';
+import 'package:movie_searcher_flutter/features/domain/entities/movie_detail_entity.dart';
 
-class MovieModel extends MovieEntity {
-  const MovieModel({
+class MovieDetailModel extends MovieDetailEntity {
+  const MovieDetailModel({
     required int id, 
     required String title, 
     required String description,
@@ -10,7 +11,8 @@ class MovieModel extends MovieEntity {
     required String image,
     required String backdropImage,
     required double average,
-    required List<int> genreIds
+    required double budget,
+    required List<GenreModel> genres
   }) : super(
     id: id, 
     title: title, 
@@ -19,11 +21,12 @@ class MovieModel extends MovieEntity {
     image: image,
     backdropImage: backdropImage,
     average: average,
-    genreIds: genreIds,
+    budget: budget,
+    genres: genres,
   );
 
-  factory MovieModel.fromJson(Map<String, dynamic> json) => 
-    MovieModel(
+  factory MovieDetailModel.fromJson(Map<String, dynamic> json) => 
+    MovieDetailModel(
       id: json['id'] ?? "", 
       title: json['title'] ?? "",
       description: json['overview'] ?? "",
@@ -31,7 +34,8 @@ class MovieModel extends MovieEntity {
       image: json['poster_path'] != null ? MovieImagePrefix.movieImagePrefix() + json['poster_path'] : "",
       backdropImage: json['backdrop_path'] != null ? MovieImagePrefix.movieImagePrefix() + json['backdrop_path'] : "",
       average: json['vote_average'] != null ? double.parse(json['vote_average'].toString()) : 0,
-      genreIds: json['genre_ids'] != null ? List.from(json['genre_ids']) : [],
+      budget: json['budget'] != null ? double.parse(json['budget'].toString()) : 0,
+      genres: json['genres'] != null ? List.from(json['genres']).map((g) => GenreModel.fromJson(g)).toList() : [],
     );
 
   Map<String, dynamic> toJson() => {
@@ -42,6 +46,7 @@ class MovieModel extends MovieEntity {
     'poster_path': image,
     'backdrop_path': backdropImage,
     'vote_average': average,
-    'genre_ids': genreIds,
+    'budget': budget,
+    'genres': genres,
   };
 }

@@ -18,12 +18,10 @@ class MovieCard extends StatelessWidget {
     final Size size = MediaQuery.of(context).size;
     List<String> genreNames = [];
 
-    if (movie.genreIds != null) {
-      genreNames = genres
-          .where((genre) => movie.genreIds!.contains(genre.id))
-          .map((genre) => genre.name)
-          .toList();
-    }
+    genreNames = genres
+        .where((genre) => movie.genreIds.contains(genre.id))
+        .map((genre) => genre.name)
+        .toList();
 
     return GestureDetector(
         onTap: () => Modular.to.pushNamed('/movie/' + movie.id.toString()),

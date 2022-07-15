@@ -1,6 +1,8 @@
 import 'package:movie_searcher_flutter/features/data/models/movie_model.dart';
 
+import '../models/movie_detail_model.dart';
+
 abstract class MovieDatasource {
   Future<List<MovieModel>> getMovies(int page);
-  Future<MovieModel> getMovie(int id);
+  Future<MovieDetailModel> getMovie(int id);
 }

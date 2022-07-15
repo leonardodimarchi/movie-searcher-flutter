@@ -8,8 +8,10 @@ import 'package:movie_searcher_flutter/core/utils/keys/tmdb_api_keys.dart';
 import 'package:movie_searcher_flutter/features/data/datasources/endpoints/tmdb_movies_endpoints.dart';
 import 'package:movie_searcher_flutter/features/data/datasources/movie_datasource.dart';
 import 'package:movie_searcher_flutter/features/data/datasources/tmdb_movie_datasource_implementation.dart';
+import 'package:movie_searcher_flutter/features/data/models/movie_detail_model.dart';
 import 'package:movie_searcher_flutter/features/data/models/movie_model.dart';
 
+import '../../../mocks/movie_detail_entity_json_mock.dart';
 import '../../../mocks/movie_entity_json_mock.dart';
 
 class HttpClientMock extends Mock implements HttpClient {}
@@ -93,14 +95,14 @@ void main() {
   });
 
   group('getMovie', () {
-    const mockedMovieEntityJson = movieEntityJsonMock;
-    final mockedMovieModel = MovieModel.fromJson(jsonDecode(mockedMovieEntityJson));
+    const mockedMovieDetailEntityJson = movieDetailEntityJsonMock;
+    final mockedMovieDetailsModel = MovieDetailModel.fromJson(jsonDecode(mockedMovieDetailEntityJson));
 
-    final expectedUrl = TmdbMoviesEndpoints.movieDetails(TmdbApiKeys.apiKey, id: mockedMovieModel.id);
+    final expectedUrl = TmdbMoviesEndpoints.movieDetails(TmdbApiKeys.apiKey, id: mockedMovieDetailsModel.id);
 
     void successMock() {
       when(() => httpClient.get(any())).thenAnswer(
-          (_) async => HttpResponse(data: mockedMovieEntityJson, statusCode: 200));
+          (_) async => HttpResponse(data: mockedMovieDetailEntityJson, statusCode: 200));
     }
 
         void failureMock() {
@@ -113,7 +115,7 @@ void main() {
     test('Should call get method with correct url', () async {
       successMock();
 
-      await datasource.getMovie(mockedMovieModel.id);
+      await datasource.getMovie(mockedMovieDetailsModel.id);
 
       verify(() => httpClient.get(expectedUrl)).called(1);
     });
@@ -121,16 +123,16 @@ void main() {
     test('Should return a movie model if successful', () async {
       successMock();
 
-      final result = await datasource.getMovie(mockedMovieModel.id);
+      final result = await datasource.getMovie(mockedMovieDetailsModel.id);
 
-      expect(result, mockedMovieModel);
+      expect(result, mockedMovieDetailsModel);
       verify(() => httpClient.get(expectedUrl)).called(1);
     });
 
     test('Should throw a ServerException if something is wrong', () async {
       failureMock();
 
-      final result = datasource.getMovie(mockedMovieModel.id);
+      final result = datasource.getMovie(mockedMovieDetailsModel.id);
 
       expect(() => result, throwsA(ServerException()));
     });

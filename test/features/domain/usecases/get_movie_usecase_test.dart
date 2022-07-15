@@ -5,7 +5,7 @@ import 'package:movie_searcher_flutter/core/errors/failures.dart';
 import 'package:movie_searcher_flutter/features/domain/repositories/movie_repository.dart';
 import 'package:movie_searcher_flutter/features/domain/usecases/get_movie_usecase.dart';
 
-import '../../../mocks/movie_entity_mock.dart';
+import '../../../mocks/movie_detail_entity_mock.dart';
 
 class MockedMovieRepository extends Mock implements MovieRepository {}
 
@@ -18,11 +18,11 @@ void main() {
     usecase = GetMovieUsecase(repository: repository);
   });
 
-  const mockedMovieEntity = movieEntityMock;
+  const mockedMovieDetailEntity = movieDetailEntityMock;
 
   void successMock() {
     when(() => repository.getMovie(any()))
-      .thenAnswer((_) async => const Right(mockedMovieEntity));
+      .thenAnswer((_) async => const Right(mockedMovieDetailEntity));
   }
 
   void failureMock() {
@@ -33,26 +33,26 @@ void main() {
   test('Should call repository with the correct params', () async {
     successMock();
 
-    await usecase(mockedMovieEntity.id);
+    await usecase(mockedMovieDetailEntity.id);
 
-    verify(() => repository.getMovie(mockedMovieEntity.id)).called(1);
+    verify(() => repository.getMovie(mockedMovieDetailEntity.id)).called(1);
   });
 
   test('Should return a movie entity when calling sucessfully', () async {
     successMock();
 
-    final result = await usecase(mockedMovieEntity.id);
+    final result = await usecase(mockedMovieDetailEntity.id);
 
-    expect(result, const Right(mockedMovieEntity));
-    verify(() => repository.getMovie(mockedMovieEntity.id)).called(1);
+    expect(result, const Right(mockedMovieDetailEntity));
+    verify(() => repository.getMovie(mockedMovieDetailEntity.id)).called(1);
   });
 
   test('Should return a failure when something went wrong', () async {
     failureMock();
 
-    final result = await usecase(mockedMovieEntity.id);
+    final result = await usecase(mockedMovieDetailEntity.id);
 
     expect(result, Left(ServerFailure()));
-    verify(() => repository.getMovie(mockedMovieEntity.id)).called(1);
+    verify(() => repository.getMovie(mockedMovieDetailEntity.id)).called(1);
   });
 }

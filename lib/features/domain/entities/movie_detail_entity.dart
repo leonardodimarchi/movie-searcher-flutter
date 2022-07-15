@@ -1,6 +1,7 @@
 import 'package:equatable/equatable.dart';
+import 'package:movie_searcher_flutter/features/domain/entities/genre_entity.dart';
 
-class MovieEntity extends Equatable {
+class MovieDetailEntity extends Equatable {
   final int id;
   final String title;
   final String description;
@@ -8,9 +9,10 @@ class MovieEntity extends Equatable {
   final String image;
   final String backdropImage;
   final double average;
-  final List<int> genreIds;
+  final double budget;
+  final List<GenreEntity> genres;
 
-  const MovieEntity({
+  const MovieDetailEntity({
     required this.id, 
     required this.title, 
     required this.description,
@@ -18,7 +20,8 @@ class MovieEntity extends Equatable {
     required this.image,
     required this.backdropImage,
     required this.average,
-    required this.genreIds
+    required this.budget,
+    required this.genres
   });
 
   @override
@@ -30,6 +33,7 @@ class MovieEntity extends Equatable {
     image,
     backdropImage,
     average,
-    genreIds
+    budget,
+    genres
   ];
 }

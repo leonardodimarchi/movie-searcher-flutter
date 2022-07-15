@@ -1,5 +1,6 @@
 import 'package:movie_searcher_flutter/core/errors/exceptions.dart';
 import 'package:movie_searcher_flutter/features/data/datasources/movie_datasource.dart';
+import 'package:movie_searcher_flutter/features/domain/entities/movie_detail_entity.dart';
 import 'package:movie_searcher_flutter/features/domain/entities/movie_entity.dart';
 import 'package:movie_searcher_flutter/core/errors/failures.dart';
 import 'package:dartz/dartz.dart';
@@ -23,7 +24,7 @@ class MovieRepositoryImplementation extends MovieRepository {
   }
 
   @override
-  Future<Either<Failure, MovieEntity>> getMovie(int id) async {
+  Future<Either<Failure, MovieDetailEntity>> getMovie(int id) async {
     try {
       final result = await datasource.getMovie(id);
       return Right(result);

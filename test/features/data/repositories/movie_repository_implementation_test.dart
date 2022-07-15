@@ -6,6 +6,7 @@ import 'package:movie_searcher_flutter/core/errors/failures.dart';
 import 'package:movie_searcher_flutter/features/data/datasources/movie_datasource.dart';
 import 'package:movie_searcher_flutter/features/data/repositories/movie_repository_implementation.dart';
 
+import '../../../mocks/movie_detail_model_mock.dart';
 import '../../../mocks/movie_model_mock.dart';
 
 class MockMovieDatasource extends Mock implements MovieDatasource {}
@@ -56,11 +57,11 @@ void main() {
   });
 
   group('getMovie', () {
-    const mockedMovieModel = movieModelMock;
+    const mockedMovieDetailModel = movieDetailModelMock;
 
     void successMock() {
       when(() => datasource.getMovie(any()))
-          .thenAnswer((_) async => mockedMovieModel);
+          .thenAnswer((_) async => mockedMovieDetailModel);
     }
 
     void failureMock() {
@@ -70,19 +71,19 @@ void main() {
     test('Should return a MovieModel when calling the datasource', () async {
       successMock();
 
-      final result = await repository.getMovie(mockedMovieModel.id);
+      final result = await repository.getMovie(mockedMovieDetailModel.id);
 
-      expect(result, const Right(mockedMovieModel));
-      verify(() => datasource.getMovie(mockedMovieModel.id)).called(1);    
+      expect(result, const Right(mockedMovieDetailModel));
+      verify(() => datasource.getMovie(mockedMovieDetailModel.id)).called(1);    
     });
 
     test('Should return a failure when datasource call is unsucessful', () async {
       failureMock();
 
-      final result = await repository.getMovie(mockedMovieModel.id);
+      final result = await repository.getMovie(mockedMovieDetailModel.id);
 
       expect(result, Left(ServerFailure()));
-      verify(() => datasource.getMovie(mockedMovieModel.id)).called(1);    
+      verify(() => datasource.getMovie(mockedMovieDetailModel.id)).called(1);    
     });
   });
 }
