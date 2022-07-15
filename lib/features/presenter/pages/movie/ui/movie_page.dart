@@ -5,6 +5,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
+import 'package:intl/intl.dart';
 import 'package:movie_searcher_flutter/features/data/models/movie_pagination.dart';
 import 'package:movie_searcher_flutter/features/domain/entities/genre_entity.dart';
 import 'package:movie_searcher_flutter/features/domain/entities/movie_entity.dart';
@@ -51,6 +52,9 @@ class _MoviePageState extends ModularState<MoviePage, MovieStore> {
                 ),
               ),
           onState: (context, MovieViewModel state) {
+            final releaseDate = DateFormat('dd/MM/yyyy')
+                .format(DateTime.parse(state.movie.releaseDate));
+
             return ScrollConfiguration(
                 behavior: const ScrollBehavior(
                     androidOverscrollIndicator:
@@ -71,13 +75,24 @@ class _MoviePageState extends ModularState<MoviePage, MovieStore> {
                       SingleChildScrollView(
                           child: Padding(
                               padding: const EdgeInsets.only(
-                                top: 150,
+                                top: 80,
                                 bottom: 50,
                                 left: 50,
                                 right: 50,
                               ),
                               child: Column(
                                 children: [
+                                  Transform.translate(
+                                    offset: const Offset(-20, 0),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: BackButton(
+                                          color: Colors.white,
+                                          onPressed: () =>
+                                              Modular.to.navigate('/')),
+                                    ),
+                                  ),
+                                  const SizedBox(height: 50),
                                   Container(
                                       height: 400,
                                       decoration: BoxDecoration(boxShadow: [
@@ -111,7 +126,8 @@ class _MoviePageState extends ModularState<MoviePage, MovieStore> {
                                       )),
                                   const SizedBox(height: 15),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
                                       Flexible(
                                         child: Text(
@@ -152,16 +168,36 @@ class _MoviePageState extends ModularState<MoviePage, MovieStore> {
                                         ),
                                       ),
                                     ],
-                                  )
+                                  ),
+                                  const SizedBox(height: 30),
+                                  Text(state.movie.description,
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleMedium
+                                          ?.copyWith(
+                                            color: Colors.white,
+                                          )),
+                                  const SizedBox(height: 20),
+                                  Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: RichText(
+                                          text: TextSpan(
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(
+                                              color: Colors.white,
+                                            ),
+                                        children: [
+                                          const TextSpan(
+                                              text: 'Release date: ',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                          TextSpan(text: releaseDate)
+                                        ],
+                                      ))),
                                 ],
                               ))),
-                      Positioned(
-                        left: 20,
-                        top: 65,
-                        child: BackButton(
-                            color: Colors.white,
-                            onPressed: () => Modular.to.navigate('/')),
-                      ),
                     ])));
           }),
     );
