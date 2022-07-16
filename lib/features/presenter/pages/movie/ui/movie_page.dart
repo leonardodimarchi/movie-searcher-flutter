@@ -202,6 +202,25 @@ class _MoviePageState extends ModularState<MoviePage, MovieStore> {
                                       ))),
                                   const SizedBox(height: 15),
                                   Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: RichText(
+                                          text: TextSpan(
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(
+                                              color: Colors.white,
+                                            ),
+                                        children: [
+                                          const TextSpan(
+                                              text: 'Budget: ',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                          TextSpan(text: NumberFormat.currency(locale: "en_US", symbol: "US\$ ").format(state.movie.budget))
+                                        ],
+                                      ))),
+                                  const SizedBox(height: 15),
+                                  Align(
                                     alignment: Alignment.centerLeft,
                                     child: Wrap(
                                       spacing: 5,
