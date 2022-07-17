@@ -8,6 +8,7 @@ class MovieDetailEntity extends Equatable {
   final String releaseDate;
   final String image;
   final String backdropImage;
+  final int runtimeInMinutes;
   final double average;
   final double budget;
   final List<GenreEntity> genres;
@@ -19,6 +20,7 @@ class MovieDetailEntity extends Equatable {
     required this.releaseDate,
     required this.image,
     required this.backdropImage,
+    required this.runtimeInMinutes,
     required this.average,
     required this.budget,
     required this.genres
@@ -32,6 +34,7 @@ class MovieDetailEntity extends Equatable {
     releaseDate,
     image,
     backdropImage,
+    runtimeInMinutes,
     average,
     budget,
     genres

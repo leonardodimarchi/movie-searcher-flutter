@@ -22,6 +22,7 @@ class MovieStore extends NotifierStore<Failure, MovieViewModel> {
             image: "",
             releaseDate: "",
             title: "",
+            runtimeInMinutes: 60,
             average: 0,
             budget: 0,
             genres: [],

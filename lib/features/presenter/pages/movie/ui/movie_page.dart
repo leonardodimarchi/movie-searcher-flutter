@@ -33,6 +33,22 @@ class _MoviePageState extends ModularState<MoviePage, MovieStore> {
     store.initialize();
   }
 
+  String minutesToHourString(int minutes) {
+    if (minutes == 0) {
+      return '-';
+    }
+    
+
+    var duration = Duration(minutes: minutes);
+
+    List<String> parts = duration.toString().split(':');
+
+    String hoursResult = int.parse(parts[0]) == 0 ? '' : '${parts[0].padLeft(1, '0')}h ';
+    String minutesResult = int.parse(parts[1]) == 0 ? '' : '${parts[1].padLeft(1, '0')}m';
+
+    return '$hoursResult$minutesResult';
+}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -198,6 +214,26 @@ class _MoviePageState extends ModularState<MoviePage, MovieStore> {
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold)),
                                           TextSpan(text: releaseDate)
+                                        ],
+                                      ))),
+                                  const SizedBox(height: 15),
+                                  Align(
+                                      alignment: Alignment.centerLeft,
+                                      child: RichText(
+                                          text: TextSpan(
+                                        style: Theme.of(context)
+                                            .textTheme
+                                            .titleMedium
+                                            ?.copyWith(
+                                              color: Colors.white,
+                                            ),
+                                        children: [
+                                          const TextSpan(
+                                              text: 'Duration: ',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                          TextSpan(
+                                              text: minutesToHourString(state.movie.runtimeInMinutes))
                                         ],
                                       ))),
                                   const SizedBox(height: 15),
