@@ -44,4 +44,10 @@ class TmdbMovieDatasourceImplementation implements MovieDatasource {
       throw ServerException();
     }
   }
+
+  @override
+  Future<List<MovieModel>> searchMovies(String searchText) {
+    // TODO: implement searchMovies
+    throw UnimplementedError();
+  }
 }

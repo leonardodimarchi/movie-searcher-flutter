@@ -86,4 +86,37 @@ void main() {
       verify(() => datasource.getMovie(mockedMovieDetailModel.id)).called(1);    
     });
   });
+
+    group('searchMovies', () {
+    void successMock() {
+      when(() => datasource.searchMovies(any()))
+          .thenAnswer((_) async => movieModelsListMock);
+    }
+
+    void failureMock() {
+      when(() => datasource.searchMovies(any())).thenThrow(ServerException());
+    }
+
+    test('Should return a list of MovieModel when calling the datasource', () async {
+      successMock();
+
+      const searchText = 'Search text';
+
+      final result = await repository.searchMovies(searchText);
+
+      expect(result, const Right(movieModelsListMock));
+      verify(() => datasource.searchMovies(searchText)).called(1);    
+    });
+
+    test('Should return a failure when datasource call is unsucessful', () async {
+      failureMock();
+
+      const searchText = 'Search text';
+
+      final result = await repository.searchMovies(searchText);
+
+      expect(result, Left(ServerFailure()));
+      verify(() => datasource.searchMovies(searchText)).called(1);    
+    });
+  });
 }
