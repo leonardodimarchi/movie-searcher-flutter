@@ -6,4 +6,5 @@ import 'package:movie_searcher_flutter/features/domain/entities/movie_entity.dar
 abstract class MovieRepository {
   Future<Either<Failure, List<MovieEntity>>> getMovies(int page);
   Future<Either<Failure, MovieDetailEntity>> getMovie(int id);
+  Future<Either<Failure, List<MovieEntity>>> searchMovies(String searchText);
 }

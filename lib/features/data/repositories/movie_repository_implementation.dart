@@ -32,4 +32,10 @@ class MovieRepositoryImplementation extends MovieRepository {
       return Left(ServerFailure());
     }
   }
+
+  @override
+  Future<Either<Failure, List<MovieEntity>>> searchMovies(String searchText) {
+    // TODO: implement searchMovies
+    throw UnimplementedError();
+  }
 }
