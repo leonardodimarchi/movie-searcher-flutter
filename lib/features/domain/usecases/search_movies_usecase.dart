@@ -4,7 +4,7 @@ import 'package:movie_searcher_flutter/core/usecase/usecase.dart';
 import 'package:movie_searcher_flutter/features/domain/entities/movie_entity.dart';
 import 'package:movie_searcher_flutter/features/domain/repositories/movie_repository.dart';
 
-class SearchMoviesUsecase extends UseCase<List<MovieEntity>, String> {
+class SearchMoviesUsecase extends UseCase<List<MovieEntity>, SearchMovieParams> {
   final MovieRepository repository;
 
   SearchMoviesUsecase({

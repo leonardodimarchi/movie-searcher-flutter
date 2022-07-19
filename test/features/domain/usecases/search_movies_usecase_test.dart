@@ -16,6 +16,10 @@ void main() {
   setUp(() {
     repository = MockedMovieRepository();
     usecase = SearchMoviesUsecase(repository: repository);
+
+    registerFallbackValue(const SearchMovieParams(
+      searchText: 'Search text',
+    ));
   });
 
   final movieEntityList = [
@@ -23,27 +27,28 @@ void main() {
     movieEntityMock,
   ];
 
+  const mockedSearchText = 'Search text';
+  const mockedSearchParams = SearchMovieParams(
+    searchText: mockedSearchText,
+  );
+
   test('Should retrieve a list of movies when called sucessfully', () async {
     when(() => repository.searchMovies(any()))
         .thenAnswer((_) async => Right(movieEntityList));
 
-    const searchText = 'Search text';
-
-    final result = await usecase(searchText);
+    final result = await usecase(mockedSearchParams);
 
     expect(result, Right(movieEntityList));
-    verify(() => repository.searchMovies(searchText)).called(1);
+    verify(() => repository.searchMovies(mockedSearchParams)).called(1);
   });
 
   test('Should return a failure when the repository call is unsuccessful', () async {
     when(() => repository.searchMovies(any()))
     .thenAnswer((_) async => Left(ServerFailure()));
 
-    const searchText = 'Search text';
-
-    final result = await usecase(searchText);
+    final result = await usecase(mockedSearchParams);
 
     expect(result, Left(ServerFailure()));
-    verify(() => repository.searchMovies(searchText)).called(1);
+    verify(() => repository.searchMovies(mockedSearchParams)).called(1);
   });
 }

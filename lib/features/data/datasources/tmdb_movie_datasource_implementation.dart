@@ -7,6 +7,7 @@ import 'package:movie_searcher_flutter/features/data/datasources/endpoints/tmdb_
 import 'package:movie_searcher_flutter/features/data/datasources/movie_datasource.dart';
 import 'package:movie_searcher_flutter/features/data/models/movie_detail_model.dart';
 import 'package:movie_searcher_flutter/features/data/models/movie_model.dart';
+import 'package:movie_searcher_flutter/features/domain/repositories/movie_repository.dart';
 
 class TmdbMovieDatasourceImplementation implements MovieDatasource {
   final HttpClient httpClient;
@@ -17,13 +18,15 @@ class TmdbMovieDatasourceImplementation implements MovieDatasource {
 
   @override
   Future<List<MovieModel>> getMovies(int page) async {
-    final url = TmdbMoviesEndpoints.discoverMovies(TmdbApiKeys.apiKey, page: page);
+    final url =
+        TmdbMoviesEndpoints.discoverMovies(TmdbApiKeys.apiKey, page: page);
     final response = await httpClient.get(url);
 
     if (response.statusCode == 200) {
       final moviesFromJson = jsonDecode(response.data)["results"];
-      
-      List<MovieModel> movies = List<MovieModel>.from(moviesFromJson.map((i) => MovieModel.fromJson(i)));
+
+      List<MovieModel> movies = List<MovieModel>.from(
+          moviesFromJson.map((i) => MovieModel.fromJson(i)));
 
       return movies;
     } else {
@@ -46,8 +49,24 @@ class TmdbMovieDatasourceImplementation implements MovieDatasource {
   }
 
   @override
-  Future<List<MovieModel>> searchMovies(String searchText) {
-    // TODO: implement searchMovies
-    throw UnimplementedError();
+  Future<List<MovieModel>> searchMovies(SearchMovieParams params) async {
+    final url = TmdbMoviesEndpoints.searchMovies(
+      TmdbApiKeys.apiKey,
+      page: params.page,
+      searchText: params.searchText
+    );
+    
+    final response = await httpClient.get(url);
+
+    if (response.statusCode == 200) {
+      final moviesFromJson = jsonDecode(response.data)["results"];
+
+      List<MovieModel> movies = List<MovieModel>.from(
+          moviesFromJson.map((i) => MovieModel.fromJson(i)));
+
+      return movies;
+    } else {
+      throw ServerException();
+    }
   }
 }

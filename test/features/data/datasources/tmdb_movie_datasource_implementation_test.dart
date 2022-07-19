@@ -10,6 +10,7 @@ import 'package:movie_searcher_flutter/features/data/datasources/movie_datasourc
 import 'package:movie_searcher_flutter/features/data/datasources/tmdb_movie_datasource_implementation.dart';
 import 'package:movie_searcher_flutter/features/data/models/movie_detail_model.dart';
 import 'package:movie_searcher_flutter/features/data/models/movie_model.dart';
+import 'package:movie_searcher_flutter/features/domain/repositories/movie_repository.dart';
 
 import '../../../mocks/movie_detail_entity_json_mock.dart';
 import '../../../mocks/movie_entity_json_mock.dart';
@@ -34,7 +35,7 @@ void main() {
     }
 
     void failureMock() {
-            when(() => httpClient.get(any())).thenAnswer((_) async => HttpResponse(
+      when(() => httpClient.get(any())).thenAnswer((_) async => HttpResponse(
             data: 'Something went wrong',
             statusCode: 400,
           ));
@@ -85,7 +86,8 @@ void main() {
       expect(result, expectedList);
     });
 
-    test('Should throw a ServerException when the call is unsuccessfull', () async {
+    test('Should throw a ServerException when the call is unsuccessfull',
+        () async {
       failureMock();
 
       final result = datasource.getMovies(1);
@@ -96,17 +98,19 @@ void main() {
 
   group('getMovie', () {
     const mockedMovieDetailEntityJson = movieDetailEntityJsonMock;
-    final mockedMovieDetailsModel = MovieDetailModel.fromJson(jsonDecode(mockedMovieDetailEntityJson));
+    final mockedMovieDetailsModel =
+        MovieDetailModel.fromJson(jsonDecode(mockedMovieDetailEntityJson));
 
-    final expectedUrl = TmdbMoviesEndpoints.movieDetails(TmdbApiKeys.apiKey, id: mockedMovieDetailsModel.id);
+    final expectedUrl = TmdbMoviesEndpoints.movieDetails(TmdbApiKeys.apiKey,
+        id: mockedMovieDetailsModel.id);
 
     void successMock() {
-      when(() => httpClient.get(any())).thenAnswer(
-          (_) async => HttpResponse(data: mockedMovieDetailEntityJson, statusCode: 200));
+      when(() => httpClient.get(any())).thenAnswer((_) async =>
+          HttpResponse(data: mockedMovieDetailEntityJson, statusCode: 200));
     }
 
-        void failureMock() {
-            when(() => httpClient.get(any())).thenAnswer((_) async => HttpResponse(
+    void failureMock() {
+      when(() => httpClient.get(any())).thenAnswer((_) async => HttpResponse(
             data: 'Something went wrong',
             statusCode: 400,
           ));
@@ -133,6 +137,82 @@ void main() {
       failureMock();
 
       final result = datasource.getMovie(mockedMovieDetailsModel.id);
+
+      expect(() => result, throwsA(ServerException()));
+    });
+  });
+
+  group('searchMovies', () {
+    const mockedSearchText = 'Search text';
+    const mockedParams = SearchMovieParams(
+      searchText: mockedSearchText,
+      page: 0,
+    );
+    final expectedUrl = TmdbMoviesEndpoints.searchMovies(TmdbApiKeys.apiKey,
+        searchText: mockedParams.searchText, page: mockedParams.page);
+
+    void successMock() {
+      when(() => httpClient.get(any())).thenAnswer(
+          (_) async => HttpResponse(data: movieListJsonMock, statusCode: 200));
+    }
+
+    void failureMock() {
+      when(() => httpClient.get(any())).thenAnswer((_) async => HttpResponse(
+            data: 'Something went wrong',
+            statusCode: 400,
+          ));
+    }
+
+    test('Should call get method with correct url', () async {
+      successMock();
+
+      await datasource.searchMovies(mockedParams);
+
+      verify(() => httpClient.get(expectedUrl)).called(1);
+    });
+
+    test('Should return a list of MovieModel when successfull', () async {
+      successMock();
+
+      const expectedList = [
+        MovieModel(
+          id: 634649,
+          title: "Spider-Man: No Way Home",
+          description:
+              "Peter Parker is unmasked and no longer able to separate his normal life from the high-stakes of being a super-hero. When he asks for help from Doctor Strange the stakes become even more dangerous, forcing him to discover what it truly means to be Spider-Man.",
+          releaseDate: "2021-12-15",
+          image:
+              "https://image.tmdb.org/t/p/original/1g0dhYtq4irTY1GPXvft6k4YLjm.jpg",
+          backdropImage:
+              "https://image.tmdb.org/t/p/original/iQFcwSGbZXMkeyKrxbPnwnRo5fl.jpg",
+          average: 8.3,
+          genreIds: [],
+        ),
+        MovieModel(
+          id: 414906,
+          title: "The Batman",
+          description:
+              "In his second year of fighting crime, Batman uncovers corruption in Gotham City that connects to his own family while facing a serial killer known as the Riddler.",
+          releaseDate: "2022-03-01",
+          image:
+              "https://image.tmdb.org/t/p/original/74xTEgt7R36Fpooo50r9T25onhq.jpg",
+          backdropImage:
+              "https://image.tmdb.org/t/p/original/5P8SmMzSNYikXpxil6BYzJ16611.jpg",
+          average: 8,
+          genreIds: [],
+        ),
+      ];
+
+      final result = await datasource.searchMovies(mockedParams);
+
+      expect(result, expectedList);
+    });
+
+    test('Should throw a ServerException when the call is unsuccessfull',
+        () async {
+      failureMock();
+
+      final result = datasource.searchMovies(mockedParams);
 
       expect(() => result, throwsA(ServerException()));
     });

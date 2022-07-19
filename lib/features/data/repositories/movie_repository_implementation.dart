@@ -34,9 +34,9 @@ class MovieRepositoryImplementation extends MovieRepository {
   }
 
   @override
-  Future<Either<Failure, List<MovieEntity>>> searchMovies(String searchText) async {
+  Future<Either<Failure, List<MovieEntity>>> searchMovies(SearchMovieParams params) async {
     try {
-      final result = await datasource.searchMovies(searchText);
+      final result = await datasource.searchMovies(params);
       return Right(result);
     } on ServerException {
       return Left(ServerFailure());
