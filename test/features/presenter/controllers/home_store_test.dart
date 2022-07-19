@@ -11,13 +11,9 @@ import 'package:movie_searcher_flutter/features/presenter/pages/home/controller/
 import '../../../mocks/genre_entity.mock.dart';
 import '../../../mocks/movie_entity_mock.dart';
 
-class MockGetMoviesUsecase extends Mock implements GetMoviesUsecase {
+class MockGetMoviesUsecase extends Mock implements GetMoviesUsecase {}
 
-}
-
-class MockGetGenresUsecase extends Mock implements GetGenresUsecase {
-
-}
+class MockGetGenresUsecase extends Mock implements GetGenresUsecase {}
 
 void main() {
   late HomeStore homeStore;
@@ -25,10 +21,12 @@ void main() {
   late GetGenresUsecase mockedGetGenresUsecase;
   final noParams = NoParams();
 
-  setUp((){
+  setUp(() {
     mockedGetMoviesUsecase = MockGetMoviesUsecase();
     mockedGetGenresUsecase = MockGetGenresUsecase();
-    homeStore = HomeStore(getMoviesUsecase: mockedGetMoviesUsecase, getGenresUsecase: mockedGetGenresUsecase);
+    homeStore = HomeStore(
+        getMoviesUsecase: mockedGetMoviesUsecase,
+        getGenresUsecase: mockedGetGenresUsecase);
 
     registerFallbackValue(NoParams());
   });
@@ -47,81 +45,97 @@ void main() {
     mockedGenreEntity,
   ];
 
-  test('Should return a List of movie entities from the GetMoviesUseCase', () async {
-    when(() => mockedGetMoviesUsecase(any())).thenAnswer((_) async => const Right(movieEntityList));
+  group('Get Movies', () {
+    test('Should return a List of movie entities from the GetMoviesUseCase',
+        () async {
+      when(() => mockedGetMoviesUsecase(any()))
+          .thenAnswer((_) async => const Right(movieEntityList));
 
-    await homeStore.getMovies();
+      await homeStore.getMovies();
 
-    homeStore.observer(
-      onState: (state) {
-        expect(state.moviePagination, MoviePagination(page: 1, list: movieEntityList));
-        verify(() => mockedGetMoviesUsecase(1)).called(1);
-      },
-    );
-  });
+      homeStore.observer(
+        onState: (state) {
+          expect(state.moviePagination,
+              MoviePagination(page: 1, list: movieEntityList));
+          verify(() => mockedGetMoviesUsecase(1)).called(1);
+        },
+      );
+    });
 
-  test('Should return a failure from the GetMoviesUseCase when there is an error', () async {
-    when(() => mockedGetMoviesUsecase(any())).thenAnswer((_) async => Left(mockedFailure));
+    test(
+        'Should return a failure from the GetMoviesUseCase when there is an error',
+        () async {
+      when(() => mockedGetMoviesUsecase(any()))
+          .thenAnswer((_) async => Left(mockedFailure));
 
-    await homeStore.getMovies();
+      await homeStore.getMovies();
 
-    homeStore.observer(
-      onError: (error) {
+      homeStore.observer(onError: (error) {
         expect(error, mockedFailure);
         verify(() => mockedGetMoviesUsecase(1)).called(1);
-      }
-    );
+      });
+    });
   });
 
-  test('Should return a List of genres from the GetGenresUsecase', () async {
-    when(() => mockedGetGenresUsecase(any())).thenAnswer((_) async => const Right(genreEntityList));
+  group('Get Genres', () {
+    test('Should return a List of genres from the GetGenresUsecase', () async {
+      when(() => mockedGetGenresUsecase(any()))
+          .thenAnswer((_) async => const Right(genreEntityList));
 
-    await homeStore.getGenres();
+      await homeStore.getGenres();
 
-    homeStore.observer(
-      onState: (state) {
-        expect(state.genres, genreEntityList);
+      homeStore.observer(
+        onState: (state) {
+          expect(state.genres, genreEntityList);
+          verify(() => mockedGetGenresUsecase(noParams)).called(1);
+        },
+      );
+    });
+
+    test(
+        'Should return a failure from the GetGenresUsecase when there is an error',
+        () async {
+      when(() => mockedGetGenresUsecase(any()))
+          .thenAnswer((_) async => Left(mockedFailure));
+
+      await homeStore.getGenres();
+
+      homeStore.observer(onError: (error) {
+        expect(error, mockedFailure);
         verify(() => mockedGetGenresUsecase(noParams)).called(1);
-      },
-    );
+      });
+    });
   });
 
-  test('Should return a failure from the GetGenresUsecase when there is an error', () async {
-    when(() => mockedGetGenresUsecase(any())).thenAnswer((_) async => Left(mockedFailure));
+  group('Pull refresh', () {
+    test('Should call getMovies with page 1 when calling PullRefresh',
+        () async {
+      when(() => mockedGetMoviesUsecase(any()))
+          .thenAnswer((_) async => const Right(movieEntityList));
 
-    await homeStore.getGenres();
+      await homeStore.refreshMovieList();
 
-    homeStore.observer(
-      onError: (error) {
-        expect(error, mockedFailure);
-        verify(() => mockedGetGenresUsecase(noParams)).called(1);
-      }
-    );
-  });
+      homeStore.observer(
+        onState: (state) {
+          expect(state.moviePagination,
+              MoviePagination(page: 1, list: movieEntityList));
+          verify(() => mockedGetMoviesUsecase(1)).called(1);
+        },
+      );
+    });
 
-  test('Should call getMovies with page 1 when calling PullRefresh', () async {
-    when(() => mockedGetMoviesUsecase(any())).thenAnswer((_) async => const Right(movieEntityList));
+    test(
+        'Should return a failure from the GetMoviesUseCase when there is an error at PullRefresh',
+        () async {
+      when(() => mockedGetMoviesUsecase(any()))
+          .thenAnswer((_) async => Left(mockedFailure));
 
-    await homeStore.refreshMovieList();
+      await homeStore.getMovies();
 
-    homeStore.observer(
-      onState: (state) {
-        expect(state.moviePagination, MoviePagination(page: 1, list: movieEntityList));
-        verify(() => mockedGetMoviesUsecase(1)).called(1);
-      },
-    );
-  });
-
-  test('Should return a failure from the GetMoviesUseCase when there is an error at PullRefresh', () async {
-    when(() => mockedGetMoviesUsecase(any())).thenAnswer((_) async => Left(mockedFailure));
-
-    await homeStore.getMovies();
-
-    homeStore.observer(
-      onError: (error) {
+      homeStore.observer(onError: (error) {
         expect(error, mockedFailure);
         verify(() => mockedGetMoviesUsecase(1)).called(1);
-      }
-    );
+      });
+    });
   });
 }
