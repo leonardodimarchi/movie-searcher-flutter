@@ -156,7 +156,7 @@ void main() {
       
       const searchText = 'Search';
 
-      await homeStore.searchMovies(searchText);
+      await homeStore.searchMovies(searchText: searchText);
 
       homeStore.observer(
         onState: (state) {
