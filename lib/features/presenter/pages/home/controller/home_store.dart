@@ -19,16 +19,16 @@ class HomeStore extends NotifierStore<Failure, HomeViewModel> {
     required this.searchMoviesUsecase,
   }) : super(HomeViewModel(moviePagination: MoviePagination(), genres: []));
 
-  getMovies() async {
-    int currentPage = state.moviePagination.page;
+  getMovies({int? page}) async {
+    int currentPage = page ?? state.moviePagination.page + 1;
 
-    if (currentPage == 0) {
+    if (currentPage == 1) {
       setLoading(true);
     }
 
-    final movieList = await getMoviesUsecase(currentPage + 1);
+    final movieList = await getMoviesUsecase(currentPage);
 
-    if (currentPage == 0) {
+    if (currentPage == 1) {
       setLoading(false);
     }
 
@@ -36,7 +36,7 @@ class HomeStore extends NotifierStore<Failure, HomeViewModel> {
       (error) => setError(error),
       (success) {
         MoviePagination movies = MoviePagination(
-            page: currentPage + 1,
+            page: currentPage,
             list: [...state.moviePagination.list, ...success]);
 
         update(HomeViewModel(moviePagination: movies, genres: state.genres));
@@ -70,18 +70,40 @@ class HomeStore extends NotifierStore<Failure, HomeViewModel> {
     );
   }
 
-  searchMovies(String searchText) async {
+  refreshSearchMovieList(String searchText) async {
+    int page = 1;
+
     final movieList = await searchMoviesUsecase(SearchMovieParams(
       searchText: searchText,
-      page: 0
+      page: page,
+    ));
+
+
+    movieList.fold(
+      (error) => setError(error),
+      (success) {
+        MoviePagination movies = MoviePagination(
+            page: page,
+            list: success);
+
+        update(HomeViewModel(moviePagination: movies, genres: state.genres));
+      },
+    );
+  }
+
+  searchMovies({required String searchText, int? page}) async {
+    final currentPage = page ?? state.moviePagination.page + 1;
+    final movieList = await searchMoviesUsecase(SearchMovieParams(
+      searchText: searchText,
+      page: currentPage,
     ));
 
     movieList.fold(
       (error) => setError(error),
       (success) {
         MoviePagination movies = MoviePagination(
-            page: 0,
-            list: success);
+            page: currentPage,
+            list: currentPage == 1 ? success : [...state.moviePagination.list, ...success]);        
 
         update(HomeViewModel(moviePagination: movies, genres: state.genres));
       },
