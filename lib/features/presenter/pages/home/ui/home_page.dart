@@ -4,6 +4,7 @@ import 'dart:async';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:movie_searcher_flutter/features/data/models/movie_pagination.dart';
@@ -24,9 +25,14 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends ModularState<HomePage, HomeStore> {
   final ScrollController scrollController = ScrollController();
+  final searchInputController = TextEditingController();
+
+  late StreamSubscription<bool> keyboardSubscription;
+
   final Color backgroundColor = Colors.grey[850]!;
 
   bool isLoadingMoreData = false;
+  bool isKeyboardOpen = false;
 
   String searchText = '';
   Timer? searchDebounce;
@@ -58,11 +64,21 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
         });
       }
     });
+
+    final keyboardVisibilityController = KeyboardVisibilityController();
+
+    keyboardSubscription =
+        keyboardVisibilityController.onChange.listen((bool visible) {
+      setState(() {
+        isKeyboardOpen = visible;
+      });
+    });
   }
 
   @override
   void dispose() {
     scrollController.dispose();
+    keyboardSubscription.cancel();
     searchDebounce?.cancel();
     super.dispose();
   }
@@ -136,18 +152,20 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                         child: Column(
                           children: [
                             if (moviePagination.list.isNotEmpty &&
-                                searchText.isEmpty)
+                                !isKeyboardOpen)
                               MovieBanner(
                                 backgroundColor,
                                 imageUrl: moviePagination.list[0].backdropImage,
                               ),
-                            if (searchText.isNotEmpty)
+                            if (isKeyboardOpen || moviePagination.list.isEmpty)
                               const SizedBox(height: 30),
                             Center(
                                 child: Container(
                               margin:
                                   const EdgeInsets.only(left: 30, right: 30),
                               child: TextField(
+                                controller: searchInputController,
+                                autofocus: false,
                                 style: const TextStyle(color: Colors.white),
                                 onChanged: onSearchChange,
                                 decoration: InputDecoration(
@@ -160,7 +178,12 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                                     borderSide: BorderSide.none,
                                   ),
                                   prefixIcon: const Icon(Icons.search),
+                                  suffixIcon: IconButton(
+                                    onPressed: searchInputController.clear,
+                                    icon: const Icon(Icons.clear),
+                                  ),
                                 ),
+                                autocorrect: false,
                               ),
                             )),
                             if (searchText.isNotEmpty &&
