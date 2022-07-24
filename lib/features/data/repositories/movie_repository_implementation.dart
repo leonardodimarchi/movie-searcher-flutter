@@ -1,5 +1,6 @@
 import 'package:movie_searcher_flutter/core/errors/exceptions.dart';
 import 'package:movie_searcher_flutter/features/data/datasources/movie_datasource.dart';
+import 'package:movie_searcher_flutter/features/domain/entities/movie_credits_entity.dart';
 import 'package:movie_searcher_flutter/features/domain/entities/movie_detail_entity.dart';
 import 'package:movie_searcher_flutter/features/domain/entities/movie_entity.dart';
 import 'package:movie_searcher_flutter/core/errors/failures.dart';
@@ -41,5 +42,10 @@ class MovieRepositoryImplementation extends MovieRepository {
     } on ServerException {
       return Left(ServerFailure());
     }
+  }
+
+  @override
+  Future<Either<Failure, MovieCreditsEntity>> getMovieCredits(int movieId) {
+    throw UnimplementedError();
   }
 }
