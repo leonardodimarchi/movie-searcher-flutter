@@ -7,7 +7,7 @@ class CrewModel extends CrewEntity {
     required String knownForDepartment,
     required String originalName,
     required String name,
-    required int popularity,
+    required double popularity,
     required String profilePath,
     required String job,
     required String department,

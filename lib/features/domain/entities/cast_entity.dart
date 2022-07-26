@@ -6,7 +6,7 @@ class CastEntity extends Equatable {
   final String knownForDepartment;
   final String originalName;
   final String name;
-  final int popularity;
+  final double popularity;
   final String profilePath;
   final int castId;
   final String character;

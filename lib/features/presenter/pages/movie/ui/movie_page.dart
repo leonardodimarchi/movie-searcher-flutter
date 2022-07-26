@@ -173,7 +173,7 @@ class _MoviePageState extends ModularState<MoviePage, MovieStore> {
                                                 color: Colors.grey[700]!)),
                                         child: Center(
                                           child: Text(
-                                            state.movie.average.toString(),
+                                            state.movie.average.toStringAsFixed(1),
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .titleMedium

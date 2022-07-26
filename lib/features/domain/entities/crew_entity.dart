@@ -6,7 +6,7 @@ class CrewEntity extends Equatable {
   final String knownForDepartment;
   final String originalName;
   final String name;
-  final int popularity;
+  final double popularity;
   final String profilePath;
   final String job;
   final String department;

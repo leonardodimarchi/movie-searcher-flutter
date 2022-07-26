@@ -94,7 +94,7 @@ class MovieCard extends StatelessWidget {
                                               color: Colors.grey[700]!)),
                                       child: Center(
                                         child: Text(
-                                          movie.average.toString(),
+                                          movie.average.toStringAsFixed(1),
                                           style: Theme.of(context)
                                               .textTheme
                                               .titleMedium
