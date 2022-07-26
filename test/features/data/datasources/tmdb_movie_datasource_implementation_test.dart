@@ -12,6 +12,8 @@ import 'package:movie_searcher_flutter/features/data/models/movie_detail_model.d
 import 'package:movie_searcher_flutter/features/data/models/movie_model.dart';
 import 'package:movie_searcher_flutter/features/domain/repositories/movie_repository.dart';
 
+import '../../../mocks/movie_credits_entity_json_mock.dart';
+import '../../../mocks/movie_credits_model_mock.dart';
 import '../../../mocks/movie_detail_entity_json_mock.dart';
 import '../../../mocks/movie_entity_json_mock.dart';
 
@@ -137,6 +139,50 @@ void main() {
       failureMock();
 
       final result = datasource.getMovie(mockedMovieDetailsModel.id);
+
+      expect(() => result, throwsA(ServerException()));
+    });
+  });
+
+  group('getMovieCredits', () {
+    const mockedMovieId = 1;
+    const mockedMovieCreditsJson = movieCreditsEntityJsonMock;
+    const mockedMovieCreditsModel = movieCreditsModelMock;
+    
+    final expectedUrl = TmdbMoviesEndpoints.movieCredits(TmdbApiKeys.apiKey, movieId: mockedMovieId);
+
+    void successMock() {
+      when(() => httpClient.get(any())).thenAnswer(
+          (_) async => HttpResponse(data: mockedMovieCreditsJson, statusCode: 200));
+    }
+
+    void failureMock() {
+      when(() => httpClient.get(any())).thenAnswer((_) async => HttpResponse(
+            data: 'Something went wrong',
+            statusCode: 400,
+          ));
+    }
+
+    test('Should call get method with correct url', () async {
+      successMock();
+
+      await datasource.getMovieCredits(mockedMovieId);
+
+      verify(() => httpClient.get(expectedUrl)).called(1);
+    });
+
+    test('Should return a MovieCreditsModel when successfull', () async {
+      successMock();
+
+      final result = await datasource.getMovieCredits(mockedMovieId);
+
+      expect(result, mockedMovieCreditsModel);
+    });
+
+    test('Should throw a ServerException when the call is unsuccessfull', () async {
+      failureMock();
+
+      final result = datasource.getMovieCredits(mockedMovieId);
 
       expect(() => result, throwsA(ServerException()));
     });

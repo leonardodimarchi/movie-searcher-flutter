@@ -72,8 +72,16 @@ class TmdbMovieDatasourceImplementation implements MovieDatasource {
   }
 
   @override
-  Future<MovieCreditsModel> getMovieCredits(int movieId) {
-    // TODO: implement getMovieCredits
-    throw UnimplementedError();
+  Future<MovieCreditsModel> getMovieCredits(int movieId) async {
+    final url = TmdbMoviesEndpoints.movieCredits(TmdbApiKeys.apiKey, movieId: movieId);
+    final response = await httpClient.get(url);
+
+    if (response.statusCode == 200) {
+      final movieCreditsJson = jsonDecode(response.data);
+
+      return MovieCreditsModel.fromJson(movieCreditsJson);
+    } else {
+      throw ServerException();
+    }
   }
 }
