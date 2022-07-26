@@ -5,6 +5,7 @@ import 'package:movie_searcher_flutter/core/http_client/http_client.dart';
 import 'package:movie_searcher_flutter/core/utils/keys/tmdb_api_keys.dart';
 import 'package:movie_searcher_flutter/features/data/datasources/endpoints/tmdb_movies_endpoints.dart';
 import 'package:movie_searcher_flutter/features/data/datasources/movie_datasource.dart';
+import 'package:movie_searcher_flutter/features/data/models/movie_credits_model.dart';
 import 'package:movie_searcher_flutter/features/data/models/movie_detail_model.dart';
 import 'package:movie_searcher_flutter/features/data/models/movie_model.dart';
 import 'package:movie_searcher_flutter/features/domain/repositories/movie_repository.dart';
@@ -68,5 +69,11 @@ class TmdbMovieDatasourceImplementation implements MovieDatasource {
     } else {
       throw ServerException();
     }
+  }
+
+  @override
+  Future<MovieCreditsModel> getMovieCredits(int movieId) {
+    // TODO: implement getMovieCredits
+    throw UnimplementedError();
   }
 }

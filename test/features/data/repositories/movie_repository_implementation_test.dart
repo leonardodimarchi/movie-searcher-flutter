@@ -7,6 +7,7 @@ import 'package:movie_searcher_flutter/features/data/datasources/movie_datasourc
 import 'package:movie_searcher_flutter/features/data/repositories/movie_repository_implementation.dart';
 import 'package:movie_searcher_flutter/features/domain/repositories/movie_repository.dart';
 
+import '../../../mocks/movie_credits_model_mock.dart';
 import '../../../mocks/movie_detail_model_mock.dart';
 import '../../../mocks/movie_model_mock.dart';
 
@@ -128,6 +129,40 @@ void main() {
 
       expect(result, Left(ServerFailure()));
       verify(() => datasource.searchMovies(mockedParams)).called(1);
+    });
+  });
+
+  group('getMovieCredits', () {
+    const mockedMovieId = 10;
+    const mockedMovieCredits = movieCreditsModelMock;
+
+    void successMock() {
+      when(() => datasource.getMovieCredits(any()))
+          .thenAnswer((_) async => mockedMovieCredits);
+    }
+
+    void failureMock() {
+      when(() => datasource.getMovieCredits(any())).thenThrow(ServerException());
+    }
+
+    test('Should return a MovieCreditsModel when calling the datasource',
+        () async {
+      successMock();
+
+      final result = await repository.getMovieCredits(mockedMovieId);
+
+      expect(result, const Right(mockedMovieCredits));
+      verify(() => datasource.getMovieCredits(mockedMovieId)).called(1);
+    });
+
+    test('Should return a failure when datasource call is unsucessful',
+        () async {
+      failureMock();
+
+      final result = await repository.getMovieCredits(mockedMovieId);
+
+      expect(result, Left(ServerFailure()));
+      verify(() => datasource.getMovieCredits(mockedMovieId)).called(1);
     });
   });
 }
