@@ -39,6 +39,7 @@ class MovieStore extends NotifierStore<Failure, MovieViewModel> {
     setLoading(true);
 
     await getMovie();
+    await getMovieCredits();
 
     setLoading(false);
   }
