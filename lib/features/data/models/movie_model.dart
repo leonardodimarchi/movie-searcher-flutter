@@ -28,8 +28,8 @@ class MovieModel extends MovieEntity {
       title: json['title'] ?? "",
       description: json['overview'] ?? "",
       releaseDate: json['release_date'] ?? "",
-      image: json['poster_path'] != null ? MovieImagePrefix.movieImagePrefix() + json['poster_path'] : "",
-      backdropImage: json['backdrop_path'] != null ? MovieImagePrefix.movieImagePrefix() + json['backdrop_path'] : "",
+      image: json['poster_path'] != null ? MovieImagePrefix.tmdbOriginalImagePrefix() + json['poster_path'] : "",
+      backdropImage: json['backdrop_path'] != null ? MovieImagePrefix.tmdbOriginalImagePrefix() + json['backdrop_path'] : "",
       average: json['vote_average'] != null ? double.parse(json['vote_average'].toString()) : 0,
       genreIds: json['genre_ids'] != null ? List.from(json['genre_ids']) : [],
     );

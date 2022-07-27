@@ -1,3 +1,3 @@
 class MovieImagePrefix {
-  static String movieImagePrefix() => "https://image.tmdb.org/t/p/original";
+  static String tmdbOriginalImagePrefix() => "https://image.tmdb.org/t/p/original";
 }

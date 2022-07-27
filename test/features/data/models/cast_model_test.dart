@@ -32,7 +32,7 @@ void main() {
       "name": "Mocked name",
       "original_name": "Mocked originalName",
       "popularity": 2,
-      "profile_path": "Mocked profilePath",
+      "profile_path": "https://image.tmdb.org/t/p/original/mocked.jpg",
       "cast_id": 2,
       "order": 2,
       "known_for_department": "Mocked knownForDepartment"

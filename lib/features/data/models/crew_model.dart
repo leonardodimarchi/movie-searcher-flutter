@@ -1,3 +1,4 @@
+import 'package:movie_searcher_flutter/features/data/datasources/endpoints/movie_image_prefix.dart';
 import 'package:movie_searcher_flutter/features/domain/entities/crew_entity.dart';
 
 class CrewModel extends CrewEntity {
@@ -31,8 +32,8 @@ class CrewModel extends CrewEntity {
         knownForDepartment: json['known_for_department'] ?? "",
         originalName: json['original_name'] ?? "",
         name: json['name'] ?? "",
-        popularity: json['popularity'] ?? 0,
-        profilePath: json['profile_path'] ?? "",
+        popularity: json['popularity'] != null ? json['popularity'].toDouble() : 0,
+        profilePath: json['profile_path'] != null ? MovieImagePrefix.tmdbOriginalImagePrefix() + json['profile_path'] : "",
         job: json['job'] ?? "",
         department: json['department'] ?? "",
         creditId: json['credit_id'] ?? "",

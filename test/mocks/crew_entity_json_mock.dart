@@ -7,7 +7,7 @@ const mockedCrewEntityJson = """
     "name": "Mocked name",
     "original_name": "Mocked originalName",
     "popularity": 2,
-    "profile_path": "Mocked profilePath",
+    "profile_path": "/mocked.jpg",
     "job": "Mocked job",
     "known_for_department": "Mocked knownForDepartment"
   }

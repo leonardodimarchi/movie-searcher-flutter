@@ -10,6 +10,6 @@ const mockedCastModel = CastModel(
   name: "Mocked name",
   originalName: "Mocked originalName",
   popularity: 2,
-  profilePath: "Mocked profilePath",
+  profilePath: "https://image.tmdb.org/t/p/original/mocked.jpg",
   knownForDepartment: "Mocked knownForDepartment"
 );

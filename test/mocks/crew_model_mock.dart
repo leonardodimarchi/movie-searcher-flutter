@@ -8,7 +8,7 @@ const mockedCrewModel = CrewModel(
   name: "Mocked name",
   originalName: "Mocked originalName",
   popularity: 2,
-  profilePath: "Mocked profilePath",
+  profilePath: "https://image.tmdb.org/t/p/original/mocked.jpg",
   job: "Mocked job",
   knownForDepartment: "Mocked knownForDepartment"
 );

@@ -1,3 +1,4 @@
+import 'package:movie_searcher_flutter/features/data/datasources/endpoints/movie_image_prefix.dart';
 import 'package:movie_searcher_flutter/features/domain/entities/cast_entity.dart';
 
 class CastModel extends CastEntity {
@@ -33,8 +34,8 @@ class CastModel extends CastEntity {
         knownForDepartment: json['known_for_department'] ?? "",
         originalName: json['original_name'] ?? "",
         name: json['name'] ?? "",
-        popularity: json['popularity']?? 0,
-        profilePath: json['profile_path'] ?? "",
+        popularity: json['popularity'] != null ? json['popularity'].toDouble() : 0,
+        profilePath: json['profile_path'] != null ? MovieImagePrefix.tmdbOriginalImagePrefix() + json['profile_path'] : "",
         character: json['character'] ?? "",
         creditId: json['credit_id'] ?? "",
         castId: json['cast_id'] ?? 0,
