@@ -23,7 +23,7 @@ Find your next movie or create your watchlist with this App. It include reviews,
   -   [ ] Add filter at movies use case (Popular, by average, etc)
   -   [x] Search
 -   [x] User can click on any of the movie to go to their own separate page
--   [ ] User can then see all about the movie ratings, about, actors present on each separate movie page
+-   [x] User can then see all about the movie ratings, about, actors present on each separate movie page
 
 ## Bonus features
 

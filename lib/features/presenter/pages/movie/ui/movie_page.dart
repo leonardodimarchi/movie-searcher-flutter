@@ -7,11 +7,13 @@ import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
 import 'package:intl/intl.dart';
 import 'package:movie_searcher_flutter/features/data/models/movie_pagination.dart';
+import 'package:movie_searcher_flutter/features/domain/entities/cast_entity.dart';
 import 'package:movie_searcher_flutter/features/domain/entities/genre_entity.dart';
 import 'package:movie_searcher_flutter/features/domain/entities/movie_entity.dart';
 import 'package:movie_searcher_flutter/features/presenter/pages/home/viewmodel/home_viewmodel.dart';
 import 'package:movie_searcher_flutter/features/presenter/pages/movie/viewmodel/movie_viewmodel.dart';
 import 'package:movie_searcher_flutter/features/presenter/widgets/movie_banner.dart';
+import 'package:movie_searcher_flutter/features/presenter/widgets/movie_cast_card.dart';
 
 import '../../../widgets/movie_card.dart';
 import '../controller/movie_store.dart';
@@ -37,17 +39,18 @@ class _MoviePageState extends ModularState<MoviePage, MovieStore> {
     if (minutes == 0) {
       return '-';
     }
-    
 
     var duration = Duration(minutes: minutes);
 
     List<String> parts = duration.toString().split(':');
 
-    String hoursResult = int.parse(parts[0]) == 0 ? '' : '${parts[0].padLeft(1, '0')}h ';
-    String minutesResult = int.parse(parts[1]) == 0 ? '' : '${parts[1].padLeft(1, '0')}m';
+    String hoursResult =
+        int.parse(parts[0]) == 0 ? '' : '${parts[0].padLeft(1, '0')}h ';
+    String minutesResult =
+        int.parse(parts[1]) == 0 ? '' : '${parts[1].padLeft(1, '0')}m';
 
     return '$hoursResult$minutesResult';
-}
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -173,7 +176,8 @@ class _MoviePageState extends ModularState<MoviePage, MovieStore> {
                                                 color: Colors.grey[700]!)),
                                         child: Center(
                                           child: Text(
-                                            state.movie.average.toStringAsFixed(1),
+                                            state.movie.average
+                                                .toStringAsFixed(1),
                                             style: Theme.of(context)
                                                 .textTheme
                                                 .titleMedium
@@ -233,7 +237,8 @@ class _MoviePageState extends ModularState<MoviePage, MovieStore> {
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold)),
                                           TextSpan(
-                                              text: minutesToHourString(state.movie.runtimeInMinutes))
+                                              text: minutesToHourString(
+                                                  state.movie.runtimeInMinutes))
                                         ],
                                       ))),
                                   const SizedBox(height: 15),
@@ -252,7 +257,11 @@ class _MoviePageState extends ModularState<MoviePage, MovieStore> {
                                               text: 'Budget: ',
                                               style: TextStyle(
                                                   fontWeight: FontWeight.bold)),
-                                          TextSpan(text: NumberFormat.currency(locale: "en_US", symbol: "US\$ ").format(state.movie.budget))
+                                          TextSpan(
+                                              text: NumberFormat.currency(
+                                                      locale: "en_US",
+                                                      symbol: "US\$ ")
+                                                  .format(state.movie.budget))
                                         ],
                                       ))),
                                   const SizedBox(height: 15),
@@ -292,7 +301,40 @@ class _MoviePageState extends ModularState<MoviePage, MovieStore> {
                                           )
                                       ],
                                     ),
-                                  )
+                                  ),
+                                  const SizedBox(height: 30),
+                                  Align(
+                                    alignment: Alignment.centerLeft,
+                                    child: Text(
+                                      'Actors',
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .titleLarge
+                                          ?.copyWith(
+                                            color: Colors.white,
+                                          ),
+                                    ),
+                                  ),
+                                  GridView.builder(
+                                    shrinkWrap: true,
+                                    physics:
+                                        const NeverScrollableScrollPhysics(),
+                                    gridDelegate:
+                                        const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 2,
+                                      crossAxisSpacing: 10,
+                                      mainAxisSpacing: 10,
+                                      mainAxisExtent:
+                                          300, // here set custom Height You Want
+                                    ),
+                                    itemCount: state.movieCredits.cast.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return MovieCastCard(
+                                          castEntity:
+                                              state.movieCredits.cast[index]);
+                                    },
+                                  ),
                                 ],
                               ))),
                     ])));
