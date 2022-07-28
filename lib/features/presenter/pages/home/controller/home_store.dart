@@ -26,7 +26,7 @@ class HomeStore extends NotifierStore<Failure, HomeViewModel> {
       setLoading(true);
     }
 
-    final movieList = await getMoviesUsecase(currentPage);
+    final movieList = await getMoviesUsecase(GetMoviesParams(page: currentPage));
 
     if (currentPage == 1) {
       setLoading(false);
@@ -56,7 +56,7 @@ class HomeStore extends NotifierStore<Failure, HomeViewModel> {
   refreshMovieList() async {
     int page = 0;
 
-    final movieList = await getMoviesUsecase(page + 1);
+    final movieList = await getMoviesUsecase(GetMoviesParams(page: page + 1));
 
     movieList.fold(
       (error) => setError(error),

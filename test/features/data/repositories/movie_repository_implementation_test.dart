@@ -24,6 +24,8 @@ void main() {
     registerFallbackValue(const SearchMovieParams(
       searchText: 'Search text',
     ));
+
+    registerFallbackValue(const GetMoviesParams(page: 1, type: GetMovieType.popular));
   });
 
   const movieModelsListMock = [
@@ -34,6 +36,8 @@ void main() {
   ];
 
   group('getMovies', () {
+    const params = GetMoviesParams(page: 1, type: GetMovieType.popular);
+
     void successMock() {
       when(() => datasource.getMovies(any()))
           .thenAnswer((_) async => movieModelsListMock);
@@ -47,20 +51,20 @@ void main() {
         () async {
       successMock();
 
-      final result = await repository.getMovies(1);
+      final result = await repository.getMovies(params);
 
       expect(result, const Right(movieModelsListMock));
-      verify(() => datasource.getMovies(1)).called(1);
+      verify(() => datasource.getMovies(params)).called(1);
     });
 
     test('Should throw an ServerFailure when data source call is unsucessfull',
         () async {
       failureMock();
 
-      final result = await repository.getMovies(1);
+      final result = await repository.getMovies(params);
 
       expect(result, Left(ServerFailure()));
-      verify(() => datasource.getMovies(1)).called(1);
+      verify(() => datasource.getMovies(params)).called(1);
     });
   });
 

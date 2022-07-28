@@ -15,9 +15,9 @@ class MovieRepositoryImplementation extends MovieRepository {
   });
 
   @override
-  Future<Either<Failure, List<MovieEntity>>> getMovies(int page) async {
+  Future<Either<Failure, List<MovieEntity>>> getMovies(GetMoviesParams params) async {
     try {
-      final result = await datasource.getMovies(page);
+      final result = await datasource.getMovies(params);
       return Right(result);
     } on ServerException {
       return Left(ServerFailure());

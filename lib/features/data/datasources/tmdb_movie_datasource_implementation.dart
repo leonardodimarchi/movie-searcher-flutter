@@ -18,9 +18,17 @@ class TmdbMovieDatasourceImplementation implements MovieDatasource {
   });
 
   @override
-  Future<List<MovieModel>> getMovies(int page) async {
-    final url =
-        TmdbMoviesEndpoints.discoverMovies(TmdbApiKeys.apiKey, page: page);
+  Future<List<MovieModel>> getMovies(GetMoviesParams params) async {
+    String url = TmdbMoviesEndpoints.popularMovies(TmdbApiKeys.apiKey, page: params.page);
+
+    if (params.type == GetMovieType.topRated) {
+      url = TmdbMoviesEndpoints.topRatedMovies(TmdbApiKeys.apiKey, page: params.page);
+    } 
+    
+    if (params.type == GetMovieType.upcoming) {
+      url = TmdbMoviesEndpoints.upcomingMovies(TmdbApiKeys.apiKey, page: params.page);
+    }
+
     final response = await httpClient.get(url);
 
     if (response.statusCode == 200) {

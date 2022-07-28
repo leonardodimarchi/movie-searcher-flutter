@@ -4,7 +4,7 @@ import 'package:movie_searcher_flutter/core/usecase/usecase.dart';
 import 'package:movie_searcher_flutter/features/domain/entities/movie_entity.dart';
 import 'package:movie_searcher_flutter/features/domain/repositories/movie_repository.dart';
 
-class GetMoviesUsecase extends UseCase<List<MovieEntity>, int> {
+class GetMoviesUsecase extends UseCase<List<MovieEntity>, GetMoviesParams> {
   final MovieRepository repository;
 
   GetMoviesUsecase({
@@ -12,7 +12,7 @@ class GetMoviesUsecase extends UseCase<List<MovieEntity>, int> {
   });
 
   @override
-  Future<Either<Failure, List<MovieEntity>>> call(int params) async {
+  Future<Either<Failure, List<MovieEntity>>> call(GetMoviesParams params) async {
     return await repository.getMovies(params);
   }
 }

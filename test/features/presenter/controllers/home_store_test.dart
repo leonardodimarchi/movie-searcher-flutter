@@ -39,6 +39,7 @@ void main() {
 
     registerFallbackValue(NoParams());
     registerFallbackValue(const SearchMovieParams(searchText: 'Search', page: 0));
+    registerFallbackValue(const GetMoviesParams(page: 1, type: GetMovieType.popular));
   });
 
   final mockedFailure = ServerFailure();
@@ -67,7 +68,7 @@ void main() {
         onState: (state) {
           expect(state.moviePagination,
               MoviePagination(page: 1, list: movieEntityList));
-          verify(() => mockedGetMoviesUsecase(1)).called(1);
+          verify(() => mockedGetMoviesUsecase(const GetMoviesParams(page: 1))).called(1);
         },
       );
     });
@@ -82,7 +83,7 @@ void main() {
 
       homeStore.observer(onError: (error) {
         expect(error, mockedFailure);
-        verify(() => mockedGetMoviesUsecase(1)).called(1);
+        verify(() => mockedGetMoviesUsecase(const GetMoviesParams(page: 1))).called(1);
       });
     });
   });
@@ -129,7 +130,7 @@ void main() {
         onState: (state) {
           expect(state.moviePagination,
               MoviePagination(page: 1, list: movieEntityList));
-          verify(() => mockedGetMoviesUsecase(1)).called(1);
+          verify(() => mockedGetMoviesUsecase(const GetMoviesParams(page: 1))).called(1);
         },
       );
     });
@@ -144,7 +145,7 @@ void main() {
 
       homeStore.observer(onError: (error) {
         expect(error, mockedFailure);
-        verify(() => mockedGetMoviesUsecase(1)).called(1);
+        verify(() => mockedGetMoviesUsecase(const GetMoviesParams(page: 1))).called(1);
       });
     });
   });

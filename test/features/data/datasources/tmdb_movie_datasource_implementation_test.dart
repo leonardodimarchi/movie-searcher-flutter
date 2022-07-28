@@ -29,7 +29,9 @@ void main() {
   });
 
   group('getMovies', () {
-    final expectedUrl = TmdbMoviesEndpoints.discoverMovies(TmdbApiKeys.apiKey);
+    final expectedPopularMoviesUrl = TmdbMoviesEndpoints.popularMovies(TmdbApiKeys.apiKey);
+    final expectedTopRatedMoviesUrl = TmdbMoviesEndpoints.topRatedMovies(TmdbApiKeys.apiKey);
+    final expectedUpcomingMoviesUrl = TmdbMoviesEndpoints.upcomingMovies(TmdbApiKeys.apiKey);
 
     void successMock() {
       when(() => httpClient.get(any())).thenAnswer(
@@ -43,12 +45,28 @@ void main() {
           ));
     }
 
-    test('Should call get method with correct url', () async {
+    test('Should call get method with correct url for popular movies type', () async {
       successMock();
 
-      await datasource.getMovies(1);
+      await datasource.getMovies(const GetMoviesParams(page: 1, type: GetMovieType.popular));
 
-      verify(() => httpClient.get(expectedUrl)).called(1);
+      verify(() => httpClient.get(expectedPopularMoviesUrl)).called(1);
+    });
+
+    test('Should call get method with correct url for top rated movies type', () async {
+      successMock();
+
+      await datasource.getMovies(const GetMoviesParams(page: 1, type: GetMovieType.topRated));
+
+      verify(() => httpClient.get(expectedTopRatedMoviesUrl)).called(1);
+    });
+
+    test('Should call get method with correct url for upcoming movies type', () async {
+      successMock();
+
+      await datasource.getMovies(const GetMoviesParams(page: 1, type: GetMovieType.upcoming));
+
+      verify(() => httpClient.get(expectedUpcomingMoviesUrl)).called(1);
     });
 
     test('Should return a list of MovieModel when successfull', () async {
@@ -83,7 +101,7 @@ void main() {
         ),
       ];
 
-      final result = await datasource.getMovies(1);
+      final result = await datasource.getMovies(const GetMoviesParams(page: 1, type: GetMovieType.popular));
 
       expect(result, expectedList);
     });
@@ -92,7 +110,7 @@ void main() {
         () async {
       failureMock();
 
-      final result = datasource.getMovies(1);
+      final result = datasource.getMovies(const GetMoviesParams(page: 1, type: GetMovieType.popular));
 
       expect(() => result, throwsA(ServerException()));
     });
