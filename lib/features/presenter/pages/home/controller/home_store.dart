@@ -17,7 +17,11 @@ class HomeStore extends NotifierStore<Failure, HomeViewModel> {
     required this.getMoviesUsecase,
     required this.getGenresUsecase,
     required this.searchMoviesUsecase,
-  }) : super(HomeViewModel(moviePagination: MoviePagination(), genres: []));
+  }) : super(HomeViewModel(
+      moviePagination: MoviePagination(),
+      selectedType: GetMovieType.popular,
+      genres: []
+    ));
 
   getMovies({int? page}) async {
     int currentPage = page ?? state.moviePagination.page + 1;
@@ -39,7 +43,7 @@ class HomeStore extends NotifierStore<Failure, HomeViewModel> {
             page: currentPage,
             list: [...state.moviePagination.list, ...success]);
 
-        update(HomeViewModel(moviePagination: movies, genres: state.genres));
+        update(HomeViewModel(moviePagination: movies, genres: state.genres, selectedType: GetMovieType.popular));
       },
     );
   }
@@ -49,7 +53,10 @@ class HomeStore extends NotifierStore<Failure, HomeViewModel> {
 
     genres.fold((error) => setError(error), (success) {
       update(HomeViewModel(
-          moviePagination: state.moviePagination, genres: success));
+          moviePagination: state.moviePagination, 
+          selectedType: state.selectedType,
+          genres: success,
+      ));
     });
   }
 
@@ -65,7 +72,11 @@ class HomeStore extends NotifierStore<Failure, HomeViewModel> {
             page: page + 1,
             list: success);
 
-        update(HomeViewModel(moviePagination: movies, genres: state.genres));
+        update(HomeViewModel(
+          moviePagination: movies,
+          selectedType: state.selectedType,
+          genres: state.genres
+        ));
       },
     );
   }
@@ -86,7 +97,11 @@ class HomeStore extends NotifierStore<Failure, HomeViewModel> {
             page: page,
             list: success);
 
-        update(HomeViewModel(moviePagination: movies, genres: state.genres));
+        update(HomeViewModel(
+          moviePagination: movies, 
+          selectedType: state.selectedType,
+          genres: state.genres
+        ));
       },
     );
   }
@@ -105,7 +120,11 @@ class HomeStore extends NotifierStore<Failure, HomeViewModel> {
             page: currentPage,
             list: currentPage == 1 ? success : [...state.moviePagination.list, ...success]);        
 
-        update(HomeViewModel(moviePagination: movies, genres: state.genres));
+        update(HomeViewModel(
+          moviePagination: movies, 
+          selectedType: state.selectedType,
+          genres: state.genres
+        ));
       },
     );
   }
