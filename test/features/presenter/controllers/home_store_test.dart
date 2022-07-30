@@ -180,14 +180,17 @@ void main() {
   });
 
   group('Change movie type', () {
-    test('Should set the new type at the viewmodel',() async {
+    test('Should set the new type at the viewmodel', () async {
+      when(() => mockedGetMoviesUsecase(any()))
+          .thenAnswer((_) async => const Right(movieEntityList));
+
       const expectedType = GetMovieType.topRated;
 
       await homeStore.changeMovieType(expectedType);
 
       homeStore.observer(
         onState: (state) {
-          expect(state, HomeViewModel(moviePagination: MoviePagination(page: 1, list: []), genres: [], selectedType: expectedType));
+          expect(state, HomeViewModel(moviePagination: MoviePagination(page: 1, list: movieEntityList), genres: [], selectedType: expectedType));
         },
       );
     });
