@@ -7,9 +7,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_keyboard_visibility/flutter_keyboard_visibility.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 import 'package:flutter_triple/flutter_triple.dart';
+import 'package:movie_searcher_flutter/core/utils/extensions/string_casing_extension.dart';
 import 'package:movie_searcher_flutter/features/data/models/movie_pagination.dart';
 import 'package:movie_searcher_flutter/features/domain/entities/genre_entity.dart';
 import 'package:movie_searcher_flutter/features/domain/entities/movie_entity.dart';
+import 'package:movie_searcher_flutter/features/domain/repositories/movie_repository.dart';
 import 'package:movie_searcher_flutter/features/presenter/pages/home/viewmodel/home_viewmodel.dart';
 import 'package:movie_searcher_flutter/features/presenter/widgets/movie_banner.dart';
 
@@ -40,6 +42,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
   @override
   void initState() {
     super.initState();
+    
     store.getMovies();
     store.getGenres();
 
@@ -179,13 +182,72 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                                   ),
                                   prefixIcon: const Icon(Icons.search),
                                   suffixIcon: IconButton(
-                                    onPressed: searchInputController.clear,
+                                    onPressed: () {
+                                      searchInputController.clear();
+                                      setState(() {
+                                        searchText = '';
+                                      });
+                                    },
                                     icon: const Icon(Icons.clear),
                                   ),
                                 ),
                                 autocorrect: false,
                               ),
                             )),
+                            if (searchText.isEmpty)
+                              const SizedBox(height: 15),
+                            if (searchText.isEmpty)
+                              Container(
+                                margin:
+                                    const EdgeInsets.only(left: 30, right: 30),
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Wrap(
+                                    spacing: 5,
+                                    runSpacing: 5,
+                                    children: [
+                                      for (GetMovieType type
+                                          in GetMovieType.values)
+                                        GestureDetector(
+                                          onTap: () =>
+                                              store.changeMovieType(type),
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                                color: Colors.grey[800]!,
+                                                borderRadius:
+                                                    const BorderRadius.all(
+                                                        Radius.circular(15)),
+                                                border: Border.all(
+                                                    width: 2,
+                                                    color: type ==
+                                                            state.selectedType
+                                                        ? Colors.white
+                                                        : Colors.grey[700]!)),
+                                            child: Padding(
+                                              padding: const EdgeInsets.only(
+                                                  top: 3,
+                                                  bottom: 3,
+                                                  left: 8,
+                                                  right: 8),
+                                              child: Text(
+                                                type
+                                                    .toShortString()
+                                                    .toCapitalized(),
+                                                maxLines: 1,
+                                                style: Theme.of(context)
+                                                    .textTheme
+                                                    .bodyMedium
+                                                    ?.copyWith(
+                                                      color: Colors.white70,
+                                                    ),
+                                              ),
+                                            ),
+                                          ),
+                                        )
+                                    ],
+                                  ),
+                                ),
+                              ),
                             if (searchText.isNotEmpty &&
                                 moviePagination.list.isEmpty)
                               Padding(

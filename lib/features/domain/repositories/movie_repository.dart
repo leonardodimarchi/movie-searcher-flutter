@@ -43,3 +43,10 @@ enum GetMovieType {
   topRated,
   upcoming,
 }
+
+extension ParseToString on GetMovieType {
+  String toShortString() {
+    // ignore: unnecessary_this
+    return this.toString().split('.').last;
+  }
+}

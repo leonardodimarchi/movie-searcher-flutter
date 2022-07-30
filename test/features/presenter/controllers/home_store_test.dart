@@ -9,6 +9,7 @@ import 'package:movie_searcher_flutter/features/domain/usecases/get_genres_useca
 import 'package:movie_searcher_flutter/features/domain/usecases/get_movies_usecase.dart';
 import 'package:movie_searcher_flutter/features/domain/usecases/search_movies_usecase.dart';
 import 'package:movie_searcher_flutter/features/presenter/pages/home/controller/home_store.dart';
+import 'package:movie_searcher_flutter/features/presenter/pages/home/viewmodel/home_viewmodel.dart';
 
 import '../../../mocks/genre_entity.mock.dart';
 import '../../../mocks/movie_entity_mock.dart';
@@ -32,14 +33,16 @@ void main() {
     mockedSearchMoviesUsecase = MockSearchMoviesUsecase();
 
     homeStore = HomeStore(
-        getMoviesUsecase: mockedGetMoviesUsecase,
-        getGenresUsecase: mockedGetGenresUsecase,
-        searchMoviesUsecase: mockedSearchMoviesUsecase,
+      getMoviesUsecase: mockedGetMoviesUsecase,
+      getGenresUsecase: mockedGetGenresUsecase,
+      searchMoviesUsecase: mockedSearchMoviesUsecase,
     );
 
     registerFallbackValue(NoParams());
-    registerFallbackValue(const SearchMovieParams(searchText: 'Search', page: 0));
-    registerFallbackValue(const GetMoviesParams(page: 1, type: GetMovieType.popular));
+    registerFallbackValue(
+        const SearchMovieParams(searchText: 'Search', page: 0));
+    registerFallbackValue(
+        const GetMoviesParams(page: 1, type: GetMovieType.popular));
   });
 
   final mockedFailure = ServerFailure();
@@ -68,7 +71,8 @@ void main() {
         onState: (state) {
           expect(state.moviePagination,
               MoviePagination(page: 1, list: movieEntityList));
-          verify(() => mockedGetMoviesUsecase(const GetMoviesParams(page: 1))).called(1);
+          verify(() => mockedGetMoviesUsecase(const GetMoviesParams(page: 1)))
+              .called(1);
         },
       );
     });
@@ -83,7 +87,8 @@ void main() {
 
       homeStore.observer(onError: (error) {
         expect(error, mockedFailure);
-        verify(() => mockedGetMoviesUsecase(const GetMoviesParams(page: 1))).called(1);
+        verify(() => mockedGetMoviesUsecase(const GetMoviesParams(page: 1)))
+            .called(1);
       });
     });
   });
@@ -130,7 +135,8 @@ void main() {
         onState: (state) {
           expect(state.moviePagination,
               MoviePagination(page: 1, list: movieEntityList));
-          verify(() => mockedGetMoviesUsecase(const GetMoviesParams(page: 1))).called(1);
+          verify(() => mockedGetMoviesUsecase(const GetMoviesParams(page: 1)))
+              .called(1);
         },
       );
     });
@@ -145,7 +151,8 @@ void main() {
 
       homeStore.observer(onError: (error) {
         expect(error, mockedFailure);
-        verify(() => mockedGetMoviesUsecase(const GetMoviesParams(page: 1))).called(1);
+        verify(() => mockedGetMoviesUsecase(const GetMoviesParams(page: 1)))
+            .called(1);
       });
     });
   });
@@ -154,7 +161,7 @@ void main() {
     test('Should return a List of movie entities when searching', () async {
       when(() => mockedSearchMoviesUsecase(any()))
           .thenAnswer((_) async => const Right(movieEntityList));
-      
+
       const searchText = 'Search';
 
       await homeStore.searchMovies(searchText: searchText);
@@ -164,7 +171,23 @@ void main() {
           expect(state.moviePagination,
               MoviePagination(page: 0, list: movieEntityList));
 
-          verify(() => mockedSearchMoviesUsecase(const SearchMovieParams(searchText: searchText, page: 0))).called(1);
+          verify(() => mockedSearchMoviesUsecase(
+                  const SearchMovieParams(searchText: searchText, page: 0)))
+              .called(1);
+        },
+      );
+    });
+  });
+
+  group('Change movie type', () {
+    test('Should set the new type at the viewmodel',() async {
+      const expectedType = GetMovieType.topRated;
+
+      await homeStore.changeMovieType(expectedType);
+
+      homeStore.observer(
+        onState: (state) {
+          expect(state, HomeViewModel(moviePagination: MoviePagination(page: 1, list: []), genres: [], selectedType: expectedType));
         },
       );
     });
