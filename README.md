@@ -1,5 +1,7 @@
 # Movie Database App (From [App Ideas](https://github.com/florinpop17/app-ideas))
 
+![App Images](.github/assets/app_preview.png)
+
 Flutter app using TDD and Clean Architecture
 
 **Tier:** 3-Advanced
