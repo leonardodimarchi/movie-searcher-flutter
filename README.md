@@ -20,6 +20,7 @@ Find your next movie or create your watchlist with this App. It include reviews,
     -   [x] Add movie categories
     -   [x] Pull to refresh
     -   [x] Bounce effect color
+    -   [] "Return to the top" button
   -   [x] Add filter at movies use case (Popular, by average, etc)
   -   [x] Search
 -   [x] User can click on any of the movie to go to their own separate page
