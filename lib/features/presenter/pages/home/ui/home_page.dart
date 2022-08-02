@@ -35,6 +35,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
 
   bool isLoadingMoreData = false;
   bool isKeyboardOpen = false;
+  bool showBackToTopButton = false;
 
   String searchText = '';
   Timer? searchDebounce;
@@ -42,7 +43,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
   @override
   void initState() {
     super.initState();
-    
+
     store.getMovies();
     store.getGenres();
 
@@ -66,6 +67,14 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
           isLoadingMoreData = false;
         });
       }
+
+      setState(() {
+        if (scrollController.offset >= 400) {
+          showBackToTopButton = true;
+        } else {
+          showBackToTopButton = false;
+        }
+      });
     });
 
     final keyboardVisibilityController = KeyboardVisibilityController();
@@ -113,11 +122,23 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
     });
   }
 
+  void scrollToTop() {
+    scrollController.animateTo(0,
+        duration: const Duration(milliseconds: 500), curve: Curves.linear);
+  }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
     return Scaffold(
+      floatingActionButton: showBackToTopButton == false
+          ? null
+          : FloatingActionButton(
+              backgroundColor: Colors.grey[800],
+              onPressed: scrollToTop,
+              child: Icon(Icons.arrow_upward, color: Colors.grey[600]),
+            ),
       backgroundColor: backgroundColor,
       body: SafeArea(
         child: ScopedBuilder(
@@ -194,8 +215,7 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
                                 autocorrect: false,
                               ),
                             )),
-                            if (searchText.isEmpty)
-                              const SizedBox(height: 15),
+                            if (searchText.isEmpty) const SizedBox(height: 15),
                             if (searchText.isEmpty)
                               Container(
                                 margin:
